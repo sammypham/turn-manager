@@ -1,0 +1,6 @@
+.site-header {
+    width: 100%;
+    background-color: var(--primary-color);
+    height: 50px;
+    color: var(--white);
+}
