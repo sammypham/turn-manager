@@ -2,6 +2,8 @@ import { useState } from "react";
 import Header from "../../components/Header/Header";
 import "./Home.css"
 
+import useFetchTech from "../../utils/useFetchTech.js"
+
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -90,6 +92,7 @@ const services = [
     { name: "Nail Shaping", abbreviation: "NS", isHalfTurn: true, color: "#FF33A1" }     // Pink
 ];
 
+
 const Home = () => {
     const [signInModalOpen, setSignInModalOpen] = useState(false);
     const [serviceMenuModalOpen, setServiceMenuModalOpen] = useState(false);
@@ -140,6 +143,7 @@ const Home = () => {
         );
     };
 
+    const { data } =  useFetchTech();
 
     return (
         <>
