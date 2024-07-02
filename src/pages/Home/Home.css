@@ -10,11 +10,34 @@
 }
 
 .home__turn-tracker-header {
+    display: flex;
+    flex-direction: row;
     position: sticky;
     top: 0px;
     width: 100%;
     min-height: 50px;
+    background-color: var(--white);
+    box-shadow: var(--border-box-shadow);
+    z-index: 2;
+}
+
+.home__turn-tracker-header .header-button {
+    display: flex;
+    border-radius: var(--border-radius-small);
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.home__turn-tracker-header .header-button.sign-in {
     background-color: var(--primary-color);
+}
+
+.home__turn-tracker-header .header-button.clear {
+    background-color: var(--red);
+    margin-left: auto;
 }
 
 .home__turn-tracker-wrapper {
@@ -28,6 +51,7 @@
     flex-direction: row;
     border-bottom: 1px black solid;
     min-height: 80px;
+    min-width: 100%;
     align-items: center;
 }
 
@@ -35,7 +59,7 @@
     display: flex;
     border-right: 1px black solid;
     height: 100%;
-    width: 80px;
+    min-width: 80px;
     align-items: center;
     justify-content: center;
 }
@@ -46,11 +70,101 @@
 }
 
 .home__turn-tracker-row .technician_name {
+    position: sticky;
+    left: 0px;
     display: flex;
     border-right: 1px black solid;
     height: 100%;
     padding: 10px;
-    width: 100px;
+    min-width: 100px;
     justify-content: center;
     align-items: center;
+    background-color: var(--white);
+    box-shadow: var(--border-box-shadow);
+    z-index: 1;
+}
+
+.modal-background {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+}
+
+.modal-header {
+    font-size: 32px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--white);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: var(--border-radius-small);
+    padding: 20px;
+}
+
+.modal-container.technicians-modal-container {
+    max-width: clamp(60%, 50vw, 800px);
+    max-height: clamp(60%, 50vw, 800px);
+}
+
+.modal-container.services-modal-container {
+    max-width: clamp(60%, 50vw, 800px);
+    max-height: clamp(60%, 50vw, 800px);
+}
+
+.modal-container .close-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    border-radius: var(--border-radius-small);
+    box-shadow: var(--border-box-shadow);
+    background-color: var(--white);
+    color: red;
+    transition: filter 0.2s;
+}
+
+.modal-container .close-button:hover {
+    filter: brightness(0.9);
+}
+
+.modal-content-wrapper {
+    overflow: auto;
+}
+
+.modal-content {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fill, 100px);
+    justify-content: center;
+}
+
+.modal-content .modal-card {
+    text-align: center;
+    align-content: center;
+    background-color: var(--white);
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    height: 100px;
+    background-color: var(--white-2);
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.modal-content .modal-card:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
 }
