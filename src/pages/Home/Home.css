@@ -155,16 +155,25 @@
 .modal-content .modal-card {
     text-align: center;
     align-content: center;
-    background-color: var(--white);
+    padding: 10px;
+    background-color: var(--service-color);
     box-shadow: var(--border-box-shadow);
     border-radius: var(--border-radius-small);
     height: 100px;
-    background-color: var(--white-2);
     font-weight: bold;
     transition: background-color 0.2s;
+}
+
+.slashed {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.5) 50%);
+}
+
+.slashed:hover {
+    background: none;
 }
 
 .modal-content .modal-card:hover {
     background-color: var(--primary-color);
     color: var(--white);
+    outline: black 4px solid;
 }
