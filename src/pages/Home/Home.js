@@ -1,6 +1,8 @@
 import Header from "../../components/Header/Header";
 import "./Home.css"
 
+import useFetchTech from "../../utils/useFetchTech.js"
+
 import AddIcon from '@mui/icons-material/Add';
 
 const technicians = [
@@ -67,7 +69,10 @@ const technicians = [
 ];
 
 
+
 const Home = () => {
+    const { data } =  useFetchTech();
+
     return (
         <>
             <Header />
