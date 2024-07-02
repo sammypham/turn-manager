@@ -3,8 +3,7 @@ const router = express.Router() // Basically if you want to create a new router 
 
 router.get('/', (req, res) => {
     console.log("Hello world")
-    res.status(201).json({message : "Hello World"});
-    //res.send("Hello world")
+    res.status(201).json({message : "Hello Server"});
 
 })
 
