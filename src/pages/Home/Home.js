@@ -143,7 +143,7 @@ const Home = () => {
         );
     };
 
-    const { data } =  useFetchTech();
+    const { data } = useFetchTech();
 
     return (
         <>
@@ -187,6 +187,9 @@ const Home = () => {
                         </div>
                         <button onClick={closeServiceMenuModal} className="close-button">
                             <CloseIcon />
+                        </button>
+                        <button className="modal-button add-service-button">
+                            Add Service
                         </button>
                         <div className="modal-content-wrapper">
                             <div className="modal-content">
