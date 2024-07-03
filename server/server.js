@@ -1,7 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const router = require('./routes/appendTech')
+const appendTech = require('./routes/appendTech')
+const services = require('./routes/services')
 const app = express()
 
 app.use(bodyParser.json())
@@ -13,7 +14,11 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 app.use(cors(corsOptions))
-app.use('/api/tech', router)
+
+
+app.use('/api/tech', appendTech)
+app.use('/api/service', services)
+
 
 const port = 4000
 
