@@ -68,8 +68,7 @@ const technicians = [
 
 router.get('/', (req, res) => {
     res.status(201).json({techList : technicians});
-})
-
+});
 
 
 module.exports = router
