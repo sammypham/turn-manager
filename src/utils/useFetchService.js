@@ -10,8 +10,7 @@ const useFetchService = () => {
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
-            }
-            
+            }         
             const responseData = await response.json();
             console.log(responseData)
             setServices(responseData.serviceList);
@@ -20,12 +19,8 @@ const useFetchService = () => {
         }
     };
     useEffect(() => {
-
         refreshService(); // Call fetchData inside useEffect
-
     }, []); // Empty dependency array to run effect only once on mount
-
     return {services, refreshService};
 };
-
 export default useFetchService;

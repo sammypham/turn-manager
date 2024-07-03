@@ -7,98 +7,64 @@
     import AddIcon from '@mui/icons-material/Add';
     import CloseIcon from '@mui/icons-material/Close';
 
-    const technicians = [
-        {
-            name: "Bob",
-            turns: ["Manicure", "Pedicure"]
-        },
-        {
-            name: "Alice",
-            turns: ["Acrylic Nails", "Gel Nails"]
-        },
-        {
-            name: "Charlie",
-            turns: ["Pedicure", "Nail Art"]
-        },
-        {
-            name: "Diana",
-            turns: ["Manicure", "Acrylic Nails"]
-        },
-        {
-            name: "Eve",
-            turns: ["Gel Nails", "Nail Art"]
-        },
-        {
-            name: "Frank",
-            turns: ["Manicure", "Pedicure"]
-        },
-        {
-            name: "Grace",
-            turns: ["Acrylic Nails", "Gel Nails"]
-        },
-        {
-            name: "Hank",
-            turns: ["Pedicure", "Nail Art"]
-        },
-        {
-            name: "Ivy",
-            turns: ["Manicure", "Nail Art"]
-        },
-        {
-            name: "Jack",
-            turns: ["Gel Nails", "Manicure"]
-        },
-        {
-            name: "Karen",
-            turns: ["Acrylic Nails", "Pedicure"]
-        },
-        {
-            name: "Leo",
-            turns: ["Gel Nails", "Nail Art"]
-        },
-        {
-            name: "Mia",
-            turns: ["Manicure", "Acrylic Nails"]
-        },
-        {
-            name: "Nina",
-            turns: ["Pedicure", "Gel Nails"]
-        },
-        {
-            name: "Oscar",
-            turns: ["Manicure", "Nail Art"]
-        },
-    ];
-
     /*
     const services = [
         { name: "Manicure", abbreviation: "M", isHalfTurn: false, color: "#FF5733" },        // Red-orange
         { name: "Pedicure", abbreviation: "P", isHalfTurn: false, color: "#33FF57" },        // Green
-        { name: "Acrylic Nails", abbreviation: "AN", isHalfTurn: false, color: "#3357FF" },  // Blue
+        { name: "Acrylic Nails", abbreviation: "AN", isHalfTurn: true, color: "#3357FF" },  // Blue
         { name: "Gel Nails", abbreviation: "GN", isHalfTurn: false, color: "#FF33A1" },      // Pink
-        { name: "Nail Art", abbreviation: "NA", isHalfTurn: false, color: "#A133FF" },       // Purple
-        { name: "Polish Change", abbreviation: "PC", isHalfTurn: true, color: "#FF5733" },   // Red-orange
-        { name: "Toe-Nails Cut", abbreviation: "TNC", isHalfTurn: true, color: "#33FFA1" },  // Light green
-        { name: "French Manicure", abbreviation: "FM", isHalfTurn: false, color: "#FFA133" },// Orange
-        { name: "Shellac Manicure", abbreviation: "SM", isHalfTurn: false, color: "#33A1FF" },// Light blue
-        { name: "Paraffin Wax Treatment", abbreviation: "PWT", isHalfTurn: true, color: "#FF5733" }, // Red-orange
-        { name: "Hand Massage", abbreviation: "HM", isHalfTurn: true, color: "#FF33FF" },    // Magenta
-        { name: "Foot Massage", abbreviation: "FM", isHalfTurn: true, color: "#FF33D4" },    // Deep pink
-        { name: "Nail Repair", abbreviation: "NR", isHalfTurn: true, color: "#33FFF4" },     // Aqua
-        { name: "Cuticle Care", abbreviation: "CC", isHalfTurn: true, color: "#FF33F4" },    // Pink
-        { name: "Callus Removal", abbreviation: "CR", isHalfTurn: false, color: "#A1FF33" }, // Lime green
-        { name: "Nail Extensions", abbreviation: "NE", isHalfTurn: false, color: "#FF5733" },// Red-orange
-        { name: "Dip Powder Nails", abbreviation: "DPN", isHalfTurn: false, color: "#5733FF" },// Indigo
-        { name: "Ombre Nails", abbreviation: "ON", isHalfTurn: false, color: "#33A1FF" },    // Light blue
-        { name: "Nail Shaping", abbreviation: "NS", isHalfTurn: true, color: "#FF33A1" }     // Pink
+        { name: "Nail Art", abbreviation: "NA", isHalfTurn: false, color: "#A133FF" },   
     ];
-    */
 
+
+    const technicians = [
+        {
+            name: "Bob",
+            turns: ["Manicure"]
+        },
+        {
+            name: "Diana",
+            turns: ["Nail Art", "Gel Nails"] 
+        },
+        {
+            name: "Alice",
+            turns: ["Manicure", "Acrylic Nails"]
+        },
+        {
+            name: "Charlie",
+            turns: ["Pedicure", "Nail Art", "Nail Art"]
+        }
+
+    ]
+    technicians.sort(function(a,b) { 
+    var firstElementLength = 0;
+    var secondElementLength = 0;
+    a.turns.forEach(function(currentService) {
+        // Action to perform on each element
+        const firstElement = services.find(service => service.name === currentService)
+        firstElementLength = firstElement.isHalfTurn ? firstElementLength += 0.5 : firstElementLength += 1
+
+    });
+    b.turns.forEach(function(currentService) {
+        // Action to perform on each element
+        const secondElement = services.find(service => service.name === currentService)
+        secondElementLength = secondElement.isHalfTurn ? secondElementLength += 0.5 : secondElementLength += 1
+        
+
+    }); 
+    return firstElementLength - secondElementLength
+    });
+    console.log(technicians)
+*/
     const Home = () => {
         const [signInModalOpen, setSignInModalOpen] = useState(false);
         const [serviceMenuModalOpen, setServiceMenuModalOpen] = useState(false);
         const [newService, setNewService] = useState({name : '', isHalfTurn: false});
         const [nextTechnician, setNextTechnician] = useState(null);
+
+        const { technicians, fetchData } = useFetchTech();
+
+        const { services, refreshService } = useFetchService();
 
         const openSignInModal = () => {
             setSignInModalOpen(true);
@@ -179,8 +145,6 @@
             }
         }
 
-        const { data } = useFetchTech();
-        const { services, refreshService } = useFetchService();
 
         return (
             <>
