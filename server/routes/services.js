@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router() // Basically if you want to create a new router object to handle the get/post requests (use router.get instead of app.get)
+const router = express.Router()
 
 const services = [
     { name: "Manicure", abbreviation: "M", isHalfTurn: false, color: "#FF5733" },        // Red-orange
@@ -24,19 +24,18 @@ const services = [
 ];
 
 router.get('/', (req, res) => {
-    res.status(201).json({serviceList : services});
+    res.status(201).json({ serviceList: services });
 })
 
 router.post('/', (req, res) => {
-    var newService = {};
-    newService["name"] = req.body.name
-    newService["abbreviation"] = newService["name"].substring(0, 4)
-    newService["isHalfTurn"] = req.body.isHalfTurn; 
-    newService["color"] = "#FF33A1";
-    services.push(newService);
-    console.log(services);
-    res.status(201).json({serviceList : services});
+    var newService = req.body;
 
+    newService["abbreviation"] = newService["name"].substring(0, 4)
+    newService["color"] = "#FF33A1";
+
+    services.push(newService);
+
+    res.status(201).json({ serviceList: services });
 })
 
 module.exports = router

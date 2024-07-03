@@ -144,24 +144,31 @@
     overflow: auto;
 }
 
+.modal-form-wrapper {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-form-input {
+    width: 100%;
+    border: black 1px solid;
+    margin: 10px 0px;
+    padding: 10px;
+    height: 40px;
+    border-radius: var(--border-radius-small);
+}
+
+.modal-form-check {
+    margin: 10px 10px;
+}
+
 .modal-content {
     display: grid;
     gap: 20px;
     padding: 20px;
     grid-template-columns: repeat(auto-fill, 100px);
     justify-content: center;
-}
-
-.modal-content .modal-card {
-    text-align: center;
-    align-content: center;
-    padding: 10px;
-    background-color: var(--service-color);
-    box-shadow: var(--border-box-shadow);
-    border-radius: var(--border-radius-small);
-    height: 100px;
-    font-weight: bold;
-    transition: background-color 0.2s;
 }
 
 .slashed {
@@ -172,15 +179,35 @@
     background: none;
 }
 
-.modal-content .modal-card:hover {
-    background-color: var(--primary-color);
-    color: var(--white);
-    outline: black 4px solid;
+.modal-card {
+    position: relative;
+    text-align: center;
+    align-content: center;
+    padding: 10px;
+    background-color: var(--service-color);
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    height: 100px;
+    width: 100px;
+    font-weight: bold;
+    transition: background-color 0.2s;
 }
 
-.modal-button {
+.modal-card:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-left: var(--white) 4px solid;
+}
+
+.modal-button-header {
     display: flex;
-    margin-right: auto;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.modal-container .modal-button {
+    display: flex;
+    margin-right: 10px;
     padding: 10px;
     background-color: var(--primary-color);
     border-radius: var(--border-radius-small);
@@ -188,6 +215,18 @@
     transition: filter 0.2s;
 }
 
-.modal-button:hover {
+.modal-button.edit-service-button {
+    background-color: gray;
+}
+
+.modal-button.delete-service-button {
+    background-color: red;
+}
+
+.modal-container .modal-button:hover {
     filter: brightness(1.2);
+}
+
+.modal-container.add-service-modal-container {
+    width: 350px;
 }
