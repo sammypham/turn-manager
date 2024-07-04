@@ -138,8 +138,9 @@ const Home = () => {
                         </div>
                     )}
                 </div>
-            </>
-        )
-    }
-    
-    export default Home;
+            </div>
+        </>
+    )
+}
+
+export default Home;
