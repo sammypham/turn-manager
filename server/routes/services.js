@@ -29,9 +29,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     var newService = req.body;
-
+    newService["name"] = req.body.name
     newService["abbreviation"] = newService["name"].substring(0, 4)
-    newService["color"] = "#FF33A1";
+    newService["color"] = req.body.color;
+    newService["isHalfTurn"] = req.body.isHalfTurn; 
 
     services.push(newService);
 
