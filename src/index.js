@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ServicesModalProvider } from './context/ServicesModalProvider';
+import { AddServicesModalProvider } from './context/AddServicesModalProvider';
+import { SignInModalProvider } from './context/SignInModalProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <SignInModalProvider>
+      <ServicesModalProvider>
+        <AddServicesModalProvider>
+          <App />
+        </AddServicesModalProvider>
+      </ServicesModalProvider>
+    </SignInModalProvider>
   </React.StrictMode>
 );
 
