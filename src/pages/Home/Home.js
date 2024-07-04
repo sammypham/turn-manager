@@ -28,6 +28,7 @@ import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
 import { useSignInModal } from "../../context/SignInModalProvider.js";
+import dayjs from "dayjs";
 
 const technicians = [
     {
@@ -78,18 +79,6 @@ const technicians = [
         name: "Leo",
         turns: ["Gel Nails", "Nail Art"]
     },
-    {
-        name: "Mia",
-        turns: ["Manicure", "Acrylic Nails"]
-    },
-    {
-        name: "Nina",
-        turns: ["Pedicure", "Gel Nails"]
-    },
-    {
-        name: "Oscar",
-        turns: ["Manicure", "Nail Art"]
-    },
 ];
 
 const Home = () => {
@@ -121,22 +110,37 @@ const Home = () => {
                         Clear
                     </button>
                 </div>
+
                 <div className="home__turn-tracker-wrapper">
-                    {technicians.map((technician, techIndex) =>
-                        <div key={techIndex} className="home__turn-tracker-row">
-                            <div className="technician_name">
-                                {technician.name} ({technician.turns.length})
-                            </div>
-                            {technician.turns.map((turn, turnIndex) =>
-                                <button onClick={openServicesModal} key={`${techIndex} ${turnIndex}`} className="turn-box">
-                                    {turn.substring(0, 4)}
+                    <div className="home__turn-tracker-content-container">
+                        {technicians.map((technician, techIndex) =>
+                            <div key={techIndex} className="home__turn-tracker-row">
+                                <div className="technician_name">
+                                    <div className="turn-order">
+                                        {techIndex + 1}
+                                    </div>
+                                    <div className="turn-time">
+                                        {dayjs().format("hh:mm A")} {/*Checkin time*/}
+                                    </div>
+                                    {technician.name} ({technician.turns.length})
+                                </div>
+                                {technician.turns.map((turn, turnIndex) =>
+                                    <button onClick={openServicesModal} key={`${techIndex} ${turnIndex}`} className="turn-box">
+                                        {turn.substring(0, 4)}
+                                        <div className="turn-counter">
+                                            {turnIndex + 1}
+                                        </div>
+                                        <div className="turn-time">
+                                            {dayjs().format("hh:mm A")}
+                                        </div>
+                                    </button>
+                                )}
+                                <button onClick={openServicesModal} className="turn-box add-turn">
+                                    <AddIcon />
                                 </button>
-                            )}
-                            <button onClick={openServicesModal} className="turn-box add-turn">
-                                <AddIcon />
-                            </button>
-                        </div>
-                    )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>

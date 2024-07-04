@@ -12,7 +12,7 @@ const AddServicesModal = ({ isOpen, onClose, newServiceFormData, changes, create
         >
             <div className="modal-container add-service-modal-container">
                 <div className="modal-header">
-                    Add New Service
+                    {newServiceFormData.isEditing ? `Editing ${newServiceFormData.name}` : "Add New Service"}
                 </div>
                 <button onClick={onClose} className="close-button">
                     <CloseIcon />
@@ -43,7 +43,7 @@ const AddServicesModal = ({ isOpen, onClose, newServiceFormData, changes, create
                     </div>
                 </div>
                 <button onClick={addService} className="modal-button add-service-button" style={{ margin: "20px 0px", marginLeft: "auto" }}>
-                    Add Service
+                    {newServiceFormData.isEditing ? "Update Service" : "Add Service"}
                 </button>
             </div>
         </div>

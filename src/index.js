@@ -6,16 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import { ServicesModalProvider } from './context/ServicesModalProvider';
 import { AddServicesModalProvider } from './context/AddServicesModalProvider';
 import { SignInModalProvider } from './context/SignInModalProvider';
+import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <SignInModalProvider>
-      <ServicesModalProvider>
-        <AddServicesModalProvider>
-          <App />
-        </AddServicesModalProvider>
-      </ServicesModalProvider>
+      <AddTechnicianModalProvider>
+        <ServicesModalProvider>
+          <AddServicesModalProvider>
+            <App />
+          </AddServicesModalProvider>
+        </ServicesModalProvider>
+      </AddTechnicianModalProvider>
     </SignInModalProvider>
   </React.StrictMode>
 );

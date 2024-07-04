@@ -1,4 +1,9 @@
 import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
+
+import { useState } from 'react';
+import AddTechnicianModal from './AddTechnicianModal';
+import { useAddTechnicianModal } from '../../context/AddTechnicianProvider';
 
 const technicians = [
     {
@@ -64,10 +69,37 @@ const technicians = [
 ];
 
 const SignInModal = ({ isOpen, onClose }) => {
+    const { addTechnicianModalOpen, newTechnicianFormData, openAddTechnicianModal, closeAddTechnicianModal, changes } = useAddTechnicianModal();
+
+    const [isSelectingEdit, setIsSelectingEdit] = useState(false);
+    const [isSelectingDelete, setIsSelectingDelete] = useState(false);
+
+    const activateSelectingEdit = () => {
+        setIsSelectingEdit(!isSelectingEdit);
+        setIsSelectingDelete(false);
+    }
+
+    const activateSelectingDelete = () => {
+        setIsSelectingDelete(!isSelectingDelete);
+        setIsSelectingEdit(false);
+    }
+
+    const clickTechnician = (technician) => {
+        if (isSelectingEdit) {
+            setIsSelectingEdit(false);
+            openAddTechnicianModal(technician);
+        } else if (isSelectingDelete) {
+            setIsSelectingEdit(false);
+
+            const confirm = window.confirm(`WARNING: Are you sure you want to delete ${technician.name}`)
+        }
+    }
 
     const createTechnicianCard = (technician, index) => {
         return (
-            <button className="modal-card" key={index}>
+            <button
+                onClick={() => clickTechnician(technician)}
+                className="modal-card" key={index}>
                 {technician ? technician.name : "Technician Name"}
             </button>
         )
@@ -79,6 +111,7 @@ const SignInModal = ({ isOpen, onClose }) => {
         <div
             className="modal-background"
         >
+            <AddTechnicianModal isOpen={addTechnicianModalOpen} onClose={closeAddTechnicianModal} formData={newTechnicianFormData} changes={changes} />
             <div className="modal-container technicians-modal-container">
                 <div className="modal-header">
                     Technicians
@@ -86,6 +119,38 @@ const SignInModal = ({ isOpen, onClose }) => {
                 <button onClick={onClose} className="close-button">
                     <CloseIcon />
                 </button>
+                <div
+                    className="modal-button-header">
+                    <button
+                        onClick={openAddTechnicianModal}
+                        className="modal-button add-service-button">
+                        Add Technician
+                    </button>
+                    <button
+                        onClick={activateSelectingEdit}
+                        className="modal-button edit-service-button">
+                        Edit Technician
+                    </button>
+                    <button
+                        onClick={activateSelectingDelete}
+                        className="modal-button delete-service-button">
+                        Delete Technician
+                    </button>
+                </div>
+                {
+                    isSelectingEdit
+                    &&
+                    <div>
+                        Select A Technician To Edit
+                    </div>
+                }
+                {
+                    isSelectingDelete
+                    &&
+                    <div>
+                        Select A Technician To Delete
+                    </div>
+                }
                 <div className="modal-content-wrapper">
                     <div className="modal-content">
                         {technicians

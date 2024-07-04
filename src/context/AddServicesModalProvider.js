@@ -16,8 +16,14 @@ export const AddServicesModalProvider = ({ children }) => {
 
     const [newServiceFormData, setNewServiceFormData] = useState(newServiceFormEmpty);
 
-    const openAddServicesModal = () => {
+    const openAddServicesModal = (serviceFormData) => {
         setAddServicesModalOpen(true);
+        if (serviceFormData) {
+            setNewServiceFormData({
+                ...serviceFormData,
+                isEditing: true
+            });
+        }
     };
 
     const closeAddServicesModal = () => {
