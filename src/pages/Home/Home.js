@@ -4,6 +4,26 @@ import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
 
+/*
+technicians.sort(function(a,b) { 
+var firstElementLength = 0;
+var secondElementLength = 0;
+a.turns.forEach(function(currentService) {
+    // Action to perform on each element
+    const firstElement = services.find(service => service.name === currentService)
+    firstElementLength = firstElement.isHalfTurn ? firstElementLength += 0.5 : firstElementLength += 1
+});
+b.turns.forEach(function(currentService) {
+    // Action to perform on each element
+    const secondElement = services.find(service => service.name === currentService)
+    secondElementLength = secondElement.isHalfTurn ? secondElementLength += 0.5 : secondElementLength += 1
+    
+}); 
+return firstElementLength - secondElementLength
+});
+console.log(technicians)
+*/
+
 import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
@@ -118,9 +138,8 @@ const Home = () => {
                         </div>
                     )}
                 </div>
-            </div>
-        </>
-    )
-}
-
-export default Home;
+            </>
+        )
+    }
+    
+    export default Home;
