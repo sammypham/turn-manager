@@ -8,28 +8,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express()
 const port = 4000
 
-// ID for google OAUTH
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
-// Passport configuration
-passport.use(new GoogleStrategy({
-    clientID: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
-    callbackURL: `http://localhost:${port}/auth/google/callback`,
-    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
-    scope: ['profile']
-}, (token, tokenSecret, profile, done) => {
-    return done(null, profile);
-}));
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-    done(null, obj);
-});
 
 // cors
 app.use(cors({
@@ -40,12 +19,10 @@ app.use(cors({
 // Routes
 const techRoute = require('./routes/appendTech')
 const servicesRoute = require('./routes/services')
+const loginRoute = require('./routes/googleLogin')
 
 // Middleware
 app.use(express.json());
-
-app.use('/api/tech', techRoute)
-app.use('/api/service', servicesRoute)
 
 // session variable
 app.use(
@@ -57,20 +34,12 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    res.locals.loggedIn = req.session.loggedIn || false
-    res.locals.hashedGoogleId = req.session.hashedGoogleId || '';
-    next();
-});
+app.use('/api/tech', techRoute)
+app.use('/api/service', servicesRoute)
+app.use('/auth/google', loginRoute)
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
-    const googleId = req.user.id;
-    console.log(req.user.id)
-    res.redirect('http://localhost:3000');
-}
-);
+
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);

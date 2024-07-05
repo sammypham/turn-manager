@@ -28,6 +28,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+    console.log(req.session.hashedGoogleId)
     var newService = req.body;
     newService["name"] = req.body.name
     newService["abbreviation"] = newService["name"].substring(0, 4)

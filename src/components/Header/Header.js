@@ -4,6 +4,11 @@ import "./Header.css"
 
 const dayjs = require('dayjs')
 
+const logoutFunction = () => {
+
+    window.location.href = "http://localhost:4000/auth/google/logout"
+}
+
 const Header = () => {
     return (
         <>
@@ -14,6 +19,9 @@ const Header = () => {
                 <NavLink to={"/login"} className="login-button" >
                     Login
                 </NavLink>
+                <button className="logout" onClick={logoutFunction}>
+                    logout    
+                </button>
             </div >
             <Outlet />
         </>
