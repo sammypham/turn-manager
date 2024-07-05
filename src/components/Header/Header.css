@@ -1,6 +1,27 @@
 .site-header {
+    display: flex;
+    flex-direction: row;
     width: 100%;
     background-color: var(--primary-color);
     height: 50px;
     color: var(--white);
+    box-shadow: var(--border-box-shadow);
+}
+
+.login-button {
+    margin: 10px;
+    margin-left: auto;
+    text-decoration: none;
+    color: var(--primary-color);
+    justify-content: center;
+    align-content: center;
+    padding: 0px 10px;
+    box-shadow: var(--border-box-shadow);
+    background-color: var(--white);
+    border-radius: var(--border-radius-small);
+    transition: filter 0.2s;
+}
+
+.login-button:hover {
+    filter: brightness(0.8);
 }

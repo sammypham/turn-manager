@@ -30,6 +30,11 @@
     align-items: center;
     justify-content: center;
     color: var(--white);
+    transition: filter 0.2s;
+}
+
+.home__turn-tracker-header .header-button:hover {
+    filter: brightness(1.2);
 }
 
 .home__turn-tracker-header .header-button.sign-in {

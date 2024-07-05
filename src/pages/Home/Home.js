@@ -110,7 +110,6 @@ const Home = () => {
                         Clear
                     </button>
                 </div>
-
                 <div className="home__turn-tracker-wrapper">
                     <div className="home__turn-tracker-content-container">
                         {technicians.map((technician, techIndex) =>

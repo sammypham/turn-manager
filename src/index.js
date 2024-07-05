@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import { ServicesModalProvider } from './context/ServicesModalProvider';
 import { AddServicesModalProvider } from './context/AddServicesModalProvider';
 import { SignInModalProvider } from './context/SignInModalProvider';
@@ -11,15 +14,17 @@ import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SignInModalProvider>
-      <AddTechnicianModalProvider>
-        <ServicesModalProvider>
-          <AddServicesModalProvider>
-            <App />
-          </AddServicesModalProvider>
-        </ServicesModalProvider>
-      </AddTechnicianModalProvider>
-    </SignInModalProvider>
+    <GoogleOAuthProvider>
+      <SignInModalProvider>
+        <AddTechnicianModalProvider>
+          <ServicesModalProvider>
+            <AddServicesModalProvider>
+              <App />
+            </AddServicesModalProvider>
+          </ServicesModalProvider>
+        </AddTechnicianModalProvider>
+      </SignInModalProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
 

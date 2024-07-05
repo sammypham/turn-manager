@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express')
 const session = require('express-session')
 const cors = require('cors')
@@ -7,15 +9,15 @@ const app = express()
 const port = 4000
 
 // ID for google OAUTH
-const CLIENT_ID="x"
-const CLIENT_SECRET="y"
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 // Passport configuration
 passport.use(new GoogleStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     callbackURL: `http://localhost:${port}/auth/google/callback`,
-    userProfileURL:'https://www.googleapis.com/oauth2/v3/userinfo',
+    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile']
 }, (token, tokenSecret, profile, done) => {
     return done(null, profile);
@@ -33,7 +35,7 @@ passport.deserializeUser((obj, done) => {
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true  // enable credentials (cookies, authorization headers)
-  }));
+}));
 
 // Routes
 const techRoute = require('./routes/appendTech')
@@ -69,8 +71,6 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
     res.redirect('http://localhost:3000');
 }
 );
-
-
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
