@@ -1,14 +1,11 @@
 require('dotenv').config();
 
+const mongoose = require('mongoose');
 const express = require('express')
 const session = require('express-session')
 const cors = require('cors')
-const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express()
 const port = 4000
-
-
 
 // cors
 app.use(cors({
@@ -19,7 +16,8 @@ app.use(cors({
 // Routes
 const techRoute = require('./routes/appendTech')
 const servicesRoute = require('./routes/services')
-const loginRoute = require('./routes/googleLogin')
+const loginRoute = require('./routes/googleLogin');
+const { User } = require('./models/users');
 
 // Middleware
 app.use(express.json());
@@ -38,10 +36,29 @@ app.use('/api/tech', techRoute)
 app.use('/api/service', servicesRoute)
 app.use('/auth/google', loginRoute)
 
+async function connectDB() {
+    try {
+        await mongoose.connect(process.env.ATLAS_URI);
+        db = mongoose.connection;
 
+        console.log("Connected to MongoDB Atlas");
+    } catch (error) {
+        console.error("Error connecting to MongoDB Atlas:", error);
+        process.exit(1); // Exit the process if unable to connect to the database
+    }
+}
 
+// async function printUsers() {
+//     try {
+//         const users = await User.find({});
+//         console.log(users);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// }
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
+    connectDB();
+    // printUsers();
 });
-
