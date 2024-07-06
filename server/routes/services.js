@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const { Service } = require('../models/service');
 const router = express.Router()
 
 const services = [
@@ -24,16 +25,17 @@ const services = [
 ];
 
 router.get('/', (req, res) => {
+    console.log(req.session.user_id);
+
     res.status(201).json({ serviceList: services });
 })
 
 router.post('/', (req, res) => {
-    console.log(req.session.hashedGoogleId)
     var newService = req.body;
     newService["name"] = req.body.name
     newService["abbreviation"] = newService["name"].substring(0, 4)
     newService["color"] = req.body.color;
-    newService["isHalfTurn"] = req.body.isHalfTurn; 
+    newService["isHalfTurn"] = req.body.isHalfTurn;
 
     services.push(newService);
 

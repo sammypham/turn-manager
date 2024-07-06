@@ -9,6 +9,7 @@
     box-shadow: var(--border-box-shadow);
     border-radius: var(--border-radius-small);
     min-height: 350px;
+    min-width: 300px;
 }
 
 .login-container .login-title {
@@ -19,4 +20,5 @@
 .login-container .login-header {
     font-size: 24px;
     font-weight: bolder;
+    margin: 10px 0px;
 }

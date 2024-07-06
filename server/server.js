@@ -10,7 +10,7 @@ const port = 4000
 // cors
 app.use(cors({
     origin: 'http://localhost:3000',
-    credentials: true  // enable credentials (cookies, authorization headers)
+    credentials: true,  // enable credentials (cookies, authorization headers)
 }));
 
 // Routes
@@ -18,6 +18,9 @@ const techRoute = require('./routes/appendTech')
 const servicesRoute = require('./routes/services')
 const loginRoute = require('./routes/googleLogin');
 const { User } = require('./models/users');
+const { Business } = require('./models/business');
+const { Technician } = require('./models/technician');
+const { Service } = require('./models/service');
 
 // Middleware
 app.use(express.json());
@@ -25,7 +28,7 @@ app.use(express.json());
 // session variable
 app.use(
     session({
-        secret: 'oneringtorulethemall',     // Secret key to sign the session ID cookie
+        secret: process.env.SESSION_SECRET,     // Secret key to sign the session ID cookie
         resave: false,                      // Don't save session if unmodified
         saveUninitialized: false,           // Don't create session until something stored
         cookie: { secure: false },          // True if using https. Set to false for development without https
@@ -48,17 +51,17 @@ async function connectDB() {
     }
 }
 
-async function printUsers() {
-    try {
-        const users = await User.find({});
-        console.log(users);
-    } catch (err) {
-        console.error(err.message);
-    }
- }
+// async function printUsers() {
+//     try {
+//         const users = await User.find({});
+//         console.log(users);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// }
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
     connectDB();
-    printUsers();
+    // printUsers();
 });
