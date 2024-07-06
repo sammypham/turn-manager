@@ -1,12 +1,20 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom';
+import { googleLogout } from '@react-oauth/google';
 
 import "./Header.css"
 
 const dayjs = require('dayjs')
 
-const logoutFunction = () => {
+const logoutFunction = async () => {
+    googleLogout();
 
-    window.location.href = "http://localhost:4000/auth/google/logout"
+    try {
+        const response = await fetch('/auth/google/logout', {
+            method: "GET"
+        })
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const Header = () => {
@@ -19,8 +27,8 @@ const Header = () => {
                 <NavLink to={"/login"} className="login-button" >
                     Login
                 </NavLink>
-                <button className="logout" onClick={logoutFunction}>
-                    logout    
+                <button style={{ marginLeft: 10 }} className="login-button" onClick={logoutFunction}>
+                    Logout
                 </button>
             </div >
             <Outlet />

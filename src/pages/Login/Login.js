@@ -1,22 +1,19 @@
 import "./Login.css"
-import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
-
     return (
         <div className="login-container">
             <div className="login-title">
-                TurnTracker
+                TurnManager
             </div>
             <div className="login-header">
-                Login / Sign Up
+                Sign In
             </div>
-            <p><a href="http://localhost:4000/auth/google">test</a></p>
-            <div style={{ width: "300px" }}>
-                <GoogleLogin />
-            </div>
+            <a href="http://localhost:4000/auth/google">
+                Sign In w/ Google
+            </a>
         </div>
-    )
-}
+    );
+};
 
 export default Login;

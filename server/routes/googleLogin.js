@@ -4,6 +4,7 @@ const session = require('express-session')
 const cors = require('cors')
 const passport = require('passport')
 const crypto = require('crypto');
+const { User } = require('../models/users');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const port = 4000
 
@@ -27,7 +28,7 @@ passport.use(new GoogleStrategy({
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile', 'email']
 }, (token, tokenSecret, profile, done) => {
-
+    console.log(1);
     // Extract user email from the profile object
     const userEmail = profile.emails[0].value;
     return done(null, profile);
@@ -47,25 +48,50 @@ router.use(passport.session());
 router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
-    req.session.hashedGoogleId = hash(req.user.id);
-    // Here we would search in the database to see if the user exists there
-    // If so, we set req.session.loggedIn to true, otherwise register an account
-    req.session.loggedIn = true;  
-    res.redirect('http://localhost:3000');
+    try {
+        const googleId = req.user.id;
+        const email = req.user.emails[0].value;
+
+        // Hash the Google ID and store it in the session
+        req.session.hashedGoogleId = hash(googleId);
+        req.session.loggedIn = true;
+
+        // Search for the user in the database
+        let user = await User.findOne({ googleId: googleId });
+
+        if (!user) {
+            // If the user does not exist, create a new user
+            user = new User({
+                email: email,
+                googleId: googleId
+            });
+
+            await user.save();
+        }
+
+        req.session.user_id = user._id;
+
+        // Redirect to the client application
+        res.redirect('http://localhost:3000');
+    } catch (error) {
+        console.error('Error during authentication callback:', error);
+        res.redirect('http://localhost:3000');
+    }
 }
 );
 
-router.get('/logout', (req,res) => {
-    console.log(req.session.hashedGoogleId)
+router.get('/logout', (req, res) => {
+    console.log(req.session.user_id);
+
     req.logout((err) => {
         if (err) {
-          // Handle error, e.g., logging or sending an error response
-          console.error('Error during logout:', err);
-          return res.status(500).json({ error: 'Logout failed' });
+            // Handle error, e.g., logging or sending an error response
+            console.error('Error during logout:', err);
+            return res.status(500).json({ error: 'Logout failed' });
         }
         // Successful logout
-        res.redirect('http://localhost:3000'); // Redirect or respond as needed
-      });
+        res.redirect('/'); // Redirect or respond as needed
+    });
 }
 );
 
