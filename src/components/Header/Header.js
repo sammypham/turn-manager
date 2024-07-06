@@ -1,13 +1,10 @@
-import { NavLink, Outlet } from 'react-router-dom';
-import { googleLogout } from '@react-oauth/google';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
 import "./Header.css"
 
 const dayjs = require('dayjs')
 
 const logoutFunction = async () => {
-    googleLogout();
-
     try {
         const response = await fetch('/auth/google/logout', {
             method: "GET"
@@ -18,9 +15,18 @@ const logoutFunction = async () => {
 }
 
 const Header = () => {
+    const location = useLocation();
+
     return (
         <>
             <div className='site-header'>
+                {
+                    location.pathname !== '/businesses'
+                    &&
+                    <NavLink to={"/businesses"} className="login-button" style={{ margin: 10 }}>
+                        Businesses
+                    </NavLink>
+                }
                 <div style={{ height: "100%", alignContent: "center", padding: 10 }}>
                     {dayjs().format("ddd, MMMM D YYYY, hh:mm A")}
                 </div>

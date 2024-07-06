@@ -1,8 +1,14 @@
+.home__business-name {
+    font-size: 24px;
+    font-weight: bolder;
+    padding: 10px;
+}
+
 .home__turn-tracker-container {
     display: flex;
     flex-direction: column;
     width: calc(100vw - 40px);
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px - 34px);
     background-color: var(--white);
     box-shadow: var(--border-box-shadow);
     margin: 20px auto;
@@ -124,7 +130,7 @@
 }
 
 .modal-background {
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     background-color: rgba(0, 0, 0, 0.5);

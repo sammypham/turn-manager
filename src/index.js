@@ -4,17 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
 import { ServicesModalProvider } from './context/ServicesModalProvider';
 import { AddServicesModalProvider } from './context/AddServicesModalProvider';
 import { SignInModalProvider } from './context/SignInModalProvider';
 import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
+import { BusinessesProvider } from './context/BusinessesProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="914572258205-pa9fgrpvmg4vs80hmbd2ldfsnrrlji87.apps.googleusercontent.com">
+    <BusinessesProvider>
       <SignInModalProvider>
         <AddTechnicianModalProvider>
           <ServicesModalProvider>
@@ -24,7 +23,7 @@ root.render(
           </ServicesModalProvider>
         </AddTechnicianModalProvider>
       </SignInModalProvider>
-    </GoogleOAuthProvider>
+    </BusinessesProvider>
   </React.StrictMode>
 );
 

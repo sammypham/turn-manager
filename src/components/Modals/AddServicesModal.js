@@ -3,18 +3,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import Checkbox from '@mui/material/Checkbox';
 import { CirclePicker } from 'react-color';
 
-
-/*
-function abberviate(text) {
-  var splitText = text.split(" ")
-  splitText.forEach(function(curText, index) {
-    splitText[index] = curText.substring(0, 4)
-  });
-  splitText = splitText.join(" ")
-  return splitText
-}
-*/
-
 const AddServicesModal = ({ isOpen, onClose, newServiceFormData, changes, createServiceCard, addService }) => {
     if (!isOpen) return null;
 

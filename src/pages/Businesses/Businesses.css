@@ -1,0 +1,34 @@
+.businesses-page-container {
+    max-width: 2000px;
+    margin: 10px auto;
+    padding: 20px;
+}
+
+.businesses-page-container .content-container {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fill, 350px);
+    justify-content: center;
+}
+
+.businesses-page-container .business-card {
+    min-height: 200px;
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    margin: 10px 10px;
+    transition: background-color 0.2s;
+}
+
+.businesses-page-container .business-card:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.business-card.add {
+    display: flex;
+    border-radius: var(--border-radius-small);
+    box-shadow: var(--border-box-shadow);
+    align-items: center;
+    justify-content: center;
+}

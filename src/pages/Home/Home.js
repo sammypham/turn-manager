@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Header from "../../components/Header/Header";
+import { useContext, useState } from "react";
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
@@ -29,6 +28,7 @@ import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
 import { useSignInModal } from "../../context/SignInModalProvider.js";
 import dayjs from "dayjs";
+import { BusinessesContext } from "../../context/BusinessesProvider.js";
 
 const technicians = [
     {
@@ -85,6 +85,7 @@ const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
+    const { currentBusiness } = useContext(BusinessesContext);
 
     const clickClearTracker = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");
@@ -95,9 +96,11 @@ const Home = () => {
 
     return (
         <>
-            <Header />
             <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
             <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
+            <div className="home__business-name">
+                {currentBusiness.name}
+            </div>
             <div className="home__turn-tracker-container">
                 <div className="home__turn-tracker-header">
                     <button onClick={openSignInModal} className="header-button sign-in">

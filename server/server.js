@@ -14,9 +14,11 @@ app.use(cors({
 }));
 
 // Routes
-const techRoute = require('./routes/appendTech')
-const servicesRoute = require('./routes/services')
+const techRoute = require('./routes/appendTech');
+const servicesRoute = require('./routes/services');
 const loginRoute = require('./routes/googleLogin');
+const businessesRoute = require('./routes/businesses');
+
 const { User } = require('./models/users');
 const { Business } = require('./models/business');
 const { Technician } = require('./models/technician');
@@ -38,6 +40,7 @@ app.use(
 app.use('/api/tech', techRoute)
 app.use('/api/service', servicesRoute)
 app.use('/auth/google', loginRoute)
+app.use('/api/business', businessesRoute)
 
 async function connectDB() {
     try {

@@ -25,8 +25,6 @@ const services = [
 ];
 
 router.get('/', (req, res) => {
-    console.log(req.session.user_id);
-
     res.status(201).json({ serviceList: services });
 })
 
