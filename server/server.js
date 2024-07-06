@@ -51,17 +51,17 @@ async function connectDB() {
     }
 }
 
-// async function printUsers() {
-//     try {
-//         const users = await User.find({});
-//         console.log(users);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// }
+async function printUsers() {
+    try {
+        const users = await User.find({});
+        console.log(users);
+    } catch (err) {
+        console.error(err.message);
+    }
+}
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
     connectDB();
-    // printUsers();
+    printUsers();
 });
