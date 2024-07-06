@@ -27,7 +27,6 @@ const Businesses = () => {
     }
 
     const createBusinessCard = (business, index) => {
-        console.log(businesses);
         return (
             <button onClick={() => clickBusiness(business)} className="business-card" key={index}>
                 <div className="business-name">
@@ -53,6 +52,9 @@ const Businesses = () => {
                     <button onClick={clickAddBusiness} className="business-card add">
                         <div>
                             <AddIcon />
+                            <div>
+                                Add New Business
+                            </div>
                         </div>
                     </button>
                 </div>

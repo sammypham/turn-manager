@@ -1,13 +1,17 @@
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import AddTechnicianModal from './AddTechnicianModal';
 import { useAddTechnicianModal } from '../../context/AddTechnicianProvider';
 import useFetchTech from "../../utils/useFetchTech.js"
+import { BusinessesContext } from '../../context/BusinessesProvider.js';
 
 const SignInModal = ({ isOpen, onClose }) => {
     const { addTechnicianModalOpen, newTechnicianFormData, openAddTechnicianModal, closeAddTechnicianModal, changes } = useAddTechnicianModal();
+
+    const { currentBusiness } = useContext(BusinessesContext);
+
     const { technicians, refreshTechnician } = useFetchTech();
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
     const [isSelectingDelete, setIsSelectingDelete] = useState(false);
@@ -22,25 +26,20 @@ const SignInModal = ({ isOpen, onClose }) => {
         setIsSelectingEdit(false);
     }
 
-    const clickTechnician = async(technician) => {
+    const clickTechnician = async (technician) => {
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddTechnicianModal(technician);
         } else if (isSelectingDelete) {
-            setIsSelectingEdit(false);
-            console.log(technician)
+            setIsSelectingDelete(false);
             const confirm = window.confirm(`WARNING: Are you sure you want to delete ${technician.name}`)
+
             if (confirm) {
-                console.log(`Deleted ${technician.name}`);
                 try {
-                    const response = await fetch('/api/tech', {
-                        method: "DELETE",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(technician)
+                    const response = await fetch(`/api/tech?business_id=${currentBusiness._id}&technician_id=${technician._id}`, {
+                        method: "DELETE"
                     })
-        
+
                     refreshTechnician();
                 } catch (error) {
                     console.error("Error:", error);
@@ -63,19 +62,19 @@ const SignInModal = ({ isOpen, onClose }) => {
     const addTech = async (event) => {
 
         try {
-                const response = await fetch('/api/tech', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newTechnicianFormData)
-                })
+            const response = await fetch(`/api/tech?business_id=${currentBusiness._id}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newTechnicianFormData)
+            })
 
-                refreshTechnician();
-                closeAddTechnicianModal();
-            } catch (error) {
-                console.error("Error:", error);
-                return [];
+            refreshTechnician();
+            closeAddTechnicianModal();
+        } catch (error) {
+            console.error("Error:", error);
+            return [];
         }
     }
     if (!isOpen) { return null; }

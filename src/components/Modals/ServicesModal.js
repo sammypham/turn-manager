@@ -4,12 +4,14 @@ import AddServicesModal from "./AddServicesModal";
 import CloseIcon from '@mui/icons-material/Close';
 
 import useFetchService from "../../utils/useFetchService.js"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { BusinessesContext } from "../../context/BusinessesProvider.js";
 
 const ServicesModal = ({ isOpen, onClose }) => {
     const { addServicesModalOpen, openAddServicesModal, closeAddServicesModal, newServiceFormData, changes } = useAddServicesModal();
 
     const { services, refreshService } = useFetchService();
+    const { currentBusiness } = useContext(BusinessesContext);
 
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
     const [isSelectingDelete, setIsSelectingDelete] = useState(false);
@@ -24,56 +26,56 @@ const ServicesModal = ({ isOpen, onClose }) => {
         setIsSelectingEdit(false);
     }
 
-    const clickService = async(service) => {
+    const deleteService = async (service) => {
+        try {
+            const response = await fetch(`/api/service?business_id=${currentBusiness._id}&service_id=${service._id}`, {
+                method: "DELETE"
+            })
+
+            if (response.ok) {
+                refreshService();
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const clickService = async (service) => {
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddServicesModal(service);
         } else if (isSelectingDelete) {
             setIsSelectingDelete(false);
             const confirm = window.confirm(`WARNING: Do you want to delete ${service.name}?`)
-            
+
             if (confirm) {
-                console.log(`Deleted ${service.name}`);
-                try {
-                    const response = await fetch('/api/service', {
-                        method: "DELETE",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(service)
-                    })
-        
-                    refreshService();
-                } catch (error) {
-                    console.error("Error:", error);
-                    return [];
-                }
+                deleteService(service);
             }
         }
     }
 
     const addService = async (event) => {
-
         try {
-                const response = await fetch('/api/service', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newServiceFormData)
-                })
+            const response = await fetch(`/api/service?business_id=${currentBusiness._id}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newServiceFormData)
+            })
 
-                refreshService();
-                closeAddServicesModal();
-            } catch (error) {
-                console.error("Error:", error);
-                return [];
-            }
+            refreshService();
+            closeAddServicesModal();
+        } catch (error) {
+            console.error("Error:", error);
+            return [];
         }
-    
+    }
+
 
     const createServiceCard = (service, index) => {
-  
+
         return (
             <button
                 onClick={() => clickService(service)}

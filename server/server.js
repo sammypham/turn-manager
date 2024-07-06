@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 // Routes
-const techRoute = require('./routes/appendTech');
+const techRoute = require('./routes/technicians');
 const servicesRoute = require('./routes/services');
 const loginRoute = require('./routes/googleLogin');
 const businessesRoute = require('./routes/businesses');

@@ -1,55 +1,52 @@
+// technicians.js
 const express = require('express');
-const { Service } = require('../models/service');
+const { Technician } = require('../models/technician');
 const { ObjectId } = require('mongodb');
-const { Business } = require('../models/business');
 const validateBusinessOwnership = require('../util/validateBusinessOwnership');
-const router = express.Router()
+const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
         validateBusinessOwnership(req, res);
 
-        const services = await Service.find({ business_id: new ObjectId(req.query.business_id) });
+        const technicians = await Technician.find({ business_id: new ObjectId(req.query.business_id) });
 
-        return res.status(200).json({ serviceList: services });
+        return res.status(200).json({ techList: technicians });
     } catch (error) {
         console.error(error);
 
         return res.status(500).json();
     }
-})
+});
 
 router.post('/', async (req, res) => {
     try {
         validateBusinessOwnership(req, res);
 
         if (req.body.isEditing) {
-            var services = await Service.findByIdAndUpdate(req.body._id, req.body)
-            await services.save();
-            res.status(201).json({ serviceList: services });
-        }
-        else {
-            var services = new Service({
+            var technician = await Technician.findByIdAndUpdate(req.body._id, req.body);
+            await technician.save();
+            res.status(201).json({ techList: technician });
+        } else {
+            var technician = new Technician({
                 business_id: new ObjectId(req.query.business_id),
                 name: req.body.name,
-                isHalfTurn: req.body.isHalfTurn,
-                color: req.body.color
+                pin: req.body.pin,
             });
-            await services.save();
-            res.status(201).json({ serviceList: services });
+            await technician.save();
+            res.status(201).json({ techList: technician });
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error connecting to MongoDB Atlas:", error);
         res.status(500).json();
     }
-})
+});
 
 router.delete('/', async (req, res) => {
     try {
         validateBusinessOwnership(req, res);
 
-        const deletedService = await Service.deleteOne({ _id: req.query.service_id });
+        const deletedTechnician = await Technician.deleteOne({ _id: req.query.technician_id });
 
         res.status(201).json();
     } catch (error) {
@@ -57,7 +54,6 @@ router.delete('/', async (req, res) => {
 
         return res.status(500).json();
     }
-})
+});
 
-
-module.exports = router
+module.exports = router;
