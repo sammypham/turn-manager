@@ -19,7 +19,7 @@ export const AddTechnicianModalProvider = ({ children }) => {
         setAddTechnicianModalOpen(true);
         if (technicianFormData) {
             setNewTechnicianFormData({
-                ...newTechnicianFormData,
+                ...technicianFormData,
                 isEditing: true
             });
         }

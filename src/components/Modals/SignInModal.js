@@ -4,73 +4,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useState } from 'react';
 import AddTechnicianModal from './AddTechnicianModal';
 import { useAddTechnicianModal } from '../../context/AddTechnicianProvider';
-
-const technicians = [
-    {
-        name: "Bob",
-        turns: ["Manicure", "Pedicure"]
-    },
-    {
-        name: "Alice",
-        turns: ["Acrylic Nails", "Gel Nails"]
-    },
-    {
-        name: "Charlie",
-        turns: ["Pedicure", "Nail Art"]
-    },
-    {
-        name: "Diana",
-        turns: ["Manicure", "Acrylic Nails"]
-    },
-    {
-        name: "Eve",
-        turns: ["Gel Nails", "Nail Art"]
-    },
-    {
-        name: "Frank",
-        turns: ["Manicure", "Pedicure"]
-    },
-    {
-        name: "Grace",
-        turns: ["Acrylic Nails", "Gel Nails"]
-    },
-    {
-        name: "Hank",
-        turns: ["Pedicure", "Nail Art"]
-    },
-    {
-        name: "Ivy",
-        turns: ["Manicure", "Nail Art"]
-    },
-    {
-        name: "Jack",
-        turns: ["Gel Nails", "Manicure"]
-    },
-    {
-        name: "Karen",
-        turns: ["Acrylic Nails", "Pedicure"]
-    },
-    {
-        name: "Leo",
-        turns: ["Gel Nails", "Nail Art"]
-    },
-    {
-        name: "Mia",
-        turns: ["Manicure", "Acrylic Nails"]
-    },
-    {
-        name: "Nina",
-        turns: ["Pedicure", "Gel Nails"]
-    },
-    {
-        name: "Oscar",
-        turns: ["Manicure", "Nail Art"]
-    },
-];
+import useFetchTech from "../../utils/useFetchTech.js"
 
 const SignInModal = ({ isOpen, onClose }) => {
     const { addTechnicianModalOpen, newTechnicianFormData, openAddTechnicianModal, closeAddTechnicianModal, changes } = useAddTechnicianModal();
-
+    const { technicians, refreshTechnician } = useFetchTech();
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
     const [isSelectingDelete, setIsSelectingDelete] = useState(false);
 
@@ -84,14 +22,31 @@ const SignInModal = ({ isOpen, onClose }) => {
         setIsSelectingEdit(false);
     }
 
-    const clickTechnician = (technician) => {
+    const clickTechnician = async(technician) => {
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddTechnicianModal(technician);
         } else if (isSelectingDelete) {
             setIsSelectingEdit(false);
-
+            console.log(technician)
             const confirm = window.confirm(`WARNING: Are you sure you want to delete ${technician.name}`)
+            if (confirm) {
+                console.log(`Deleted ${technician.name}`);
+                try {
+                    const response = await fetch('/api/tech', {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(technician)
+                    })
+        
+                    refreshTechnician();
+                } catch (error) {
+                    console.error("Error:", error);
+                    return [];
+                }
+            }
         }
     }
 
@@ -105,13 +60,31 @@ const SignInModal = ({ isOpen, onClose }) => {
         )
     }
 
+    const addTech = async (event) => {
+
+        try {
+                const response = await fetch('/api/tech', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newTechnicianFormData)
+                })
+
+                refreshTechnician();
+                closeAddTechnicianModal();
+            } catch (error) {
+                console.error("Error:", error);
+                return [];
+        }
+    }
     if (!isOpen) { return null; }
 
     return (
         <div
             className="modal-background"
         >
-            <AddTechnicianModal isOpen={addTechnicianModalOpen} onClose={closeAddTechnicianModal} formData={newTechnicianFormData} changes={changes} />
+            <AddTechnicianModal isOpen={addTechnicianModalOpen} onClose={closeAddTechnicianModal} formData={newTechnicianFormData} changes={changes} addTech={addTech} />
             <div className="modal-container technicians-modal-container">
                 <div className="modal-header">
                     Technicians
@@ -122,7 +95,7 @@ const SignInModal = ({ isOpen, onClose }) => {
                 <div
                     className="modal-button-header">
                     <button
-                        onClick={openAddTechnicianModal}
+                        onClick={() => openAddTechnicianModal()}
                         className="modal-button add-service-button">
                         Add Technician
                     </button>

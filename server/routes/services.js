@@ -1,8 +1,10 @@
 const express = require('express');
 const { Service } = require('../models/service');
+const { ObjectId } = require('mongodb');
 const router = express.Router()
 
-const services = [
+
+/*const services = [
     { name: "Manicure", abbreviation: "M", isHalfTurn: false, color: "#FF5733" },        // Red-orange
     { name: "Pedicure", abbreviation: "P", isHalfTurn: false, color: "#33FF57" },        // Green
     { name: "Acrylic Nails", abbreviation: "AN", isHalfTurn: false, color: "#3357FF" },  // Blue
@@ -22,24 +24,57 @@ const services = [
     { name: "Dip Powder Nails", abbreviation: "DPN", isHalfTurn: false, color: "#5733FF" },// Indigo
     { name: "Ombre Nails", abbreviation: "ON", isHalfTurn: false, color: "#33A1FF" },    // Light blue
     { name: "Nail Shaping", abbreviation: "NS", isHalfTurn: true, color: "#FF33A1" }     // Pink
-];
+];*/
 
-router.get('/', (req, res) => {
-    console.log(req.session.user_id);
+router.get('/', async(req, res) => {
+    let services= await Service.find({business_id: new ObjectId("6688a678923aeb0740c7b48f") });
+
 
     res.status(201).json({ serviceList: services });
 })
 
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
+    try {
+        if (req.body.isEditing) {
+  
+            var services = await Service.findByIdAndUpdate(req.body._id,req.body )
+            await services.save();
+            res.status(201).json({ serviceList: services });
+        }
+        else {
+            var services = new Service({
+                business_id: new ObjectId("6688a678923aeb0740c7b48f"),
+                name: req.body.name,
+                isHalfTurn: req.body.isHalfTurn,
+                color: req.body.color
+            });
+            await services.save();
+            res.status(201).json({ serviceList: services });
+        }
+    }
+    catch(error) {
+        console.error("Error connecting to MongoDB Atlas:", error);
+        process.exit(1);
+    }
+
+
+    /*
     var newService = req.body;
     newService["name"] = req.body.name
     newService["abbreviation"] = newService["name"].substring(0, 4)
     newService["color"] = req.body.color;
     newService["isHalfTurn"] = req.body.isHalfTurn;
 
-    services.push(newService);
 
+    services.push(newService);
+    */
+})
+
+router.delete('/', async(req, res) => {
+    // You want to serach by actual ID
+    let services= await Service.deleteOne({ _id: req.body._id});
     res.status(201).json({ serviceList: services });
 })
+
 
 module.exports = router

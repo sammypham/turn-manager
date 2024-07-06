@@ -24,39 +24,56 @@ const ServicesModal = ({ isOpen, onClose }) => {
         setIsSelectingEdit(false);
     }
 
-    const clickService = (service) => {
+    const clickService = async(service) => {
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddServicesModal(service);
         } else if (isSelectingDelete) {
             setIsSelectingDelete(false);
             const confirm = window.confirm(`WARNING: Do you want to delete ${service.name}?`)
-
+            
             if (confirm) {
                 console.log(`Deleted ${service.name}`);
+                try {
+                    const response = await fetch('/api/service', {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(service)
+                    })
+        
+                    refreshService();
+                } catch (error) {
+                    console.error("Error:", error);
+                    return [];
+                }
             }
         }
     }
 
     const addService = async (event) => {
-        try {
-            const response = await fetch('/api/service', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newServiceFormData)
-            })
 
-            refreshService();
-            closeAddServicesModal();
-        } catch (error) {
-            console.error("Error:", error);
-            return [];
+        try {
+                const response = await fetch('/api/service', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newServiceFormData)
+                })
+
+                refreshService();
+                closeAddServicesModal();
+            } catch (error) {
+                console.error("Error:", error);
+                return [];
+            }
         }
-    }
+    
 
     const createServiceCard = (service, index) => {
+  
         return (
             <button
                 onClick={() => clickService(service)}

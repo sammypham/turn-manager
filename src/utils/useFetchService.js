@@ -12,7 +12,7 @@ const useFetchService = () => {
                 throw new Error('Network response was not ok');
             }         
             const responseData = await response.json();
-            console.log(responseData)
+
             setServices(responseData.serviceList);
         } catch (error) {
             console.error("Error:", error);

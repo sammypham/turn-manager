@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile', 'email']
 }, (token, tokenSecret, profile, done) => {
-    console.log(1);
+
     // Extract user email from the profile object
     const userEmail = profile.emails[0].value;
     return done(null, profile);
@@ -70,7 +70,6 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
         }
 
         req.session.user_id = user._id;
-
         // Redirect to the client application
         res.redirect('http://localhost:3000');
     } catch (error) {

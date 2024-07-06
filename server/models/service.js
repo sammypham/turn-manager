@@ -10,7 +10,7 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isHalf: {
+    isHalfTurn: {
         type: Boolean,
     },
     color: {
