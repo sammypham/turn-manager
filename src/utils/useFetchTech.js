@@ -6,30 +6,29 @@ const useFetchTech = () => {
 
     const [technicians, setTechnicians] = useState([]);
 
-    const fetchData = async () => {
-        const [technicians, setTechnicians] = useState([]); // Initialize data as an empty array
-        const refreshTechnician = async () => {
-            try {
-                const response = await fetch(`/api/tech?business_id=${currentBusiness._id}`, {
-                    method: "GET"
-                });
+    const refreshTechnician = async () => {
+        try {
+            const response = await fetch(`/api/tech?business_id=${currentBusiness._id}`, {
+                method: "GET"
+            });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const responseData = await response.json();
-
-                setTechnicians(responseData.techList);
-            } catch (error) {
-                console.error("Error:", error);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
 
-        useEffect(() => {
-            refreshTechnician();
-        }, []);
+            const responseData = await response.json();
 
-        return { technicians, refreshTechnician };
+            setTechnicians(responseData.techList);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
-    export default useFetchTech;
+
+    useEffect(() => {
+        refreshTechnician();
+    }, []);
+
+    return { technicians, refreshTechnician };
+};
+
+export default useFetchTech;
