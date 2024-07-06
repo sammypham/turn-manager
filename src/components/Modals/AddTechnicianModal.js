@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 
-const AddTechnicianModal = ({ isOpen, onClose, formData, changes }) => {
+const AddTechnicianModal = ({ isOpen, onClose, formData, changes, addTech }) => {
     if (!isOpen) { return null; };
 
     return (
@@ -18,7 +18,7 @@ const AddTechnicianModal = ({ isOpen, onClose, formData, changes }) => {
                         className="modal-form-input"
                         placeholder="New Technician Name (required)"
                         value={formData.name}
-                        onChange={changes.changeName}
+                        onChange={changes.changeTechnicianName}
                     />
                     Technician Pin:
                     <input
@@ -37,7 +37,7 @@ const AddTechnicianModal = ({ isOpen, onClose, formData, changes }) => {
                         onChange={changes.changeConfirmPin}
                     />
                 </div>
-                <button onClick={onClose} className="modal-button add-service-button" style={{ margin: "20px 0px", marginLeft: "auto" }}>
+                <button onClick={addTech} className="modal-button add-service-button" style={{ margin: "20px 0px", marginLeft: "auto" }}>
                     Add Technician
                 </button>
             </div>
