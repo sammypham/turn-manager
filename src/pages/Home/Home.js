@@ -92,6 +92,24 @@ const Home = () => {
 
     const [signIns, setSignIns] = useState([]);
 
+    /*
+    const getBusiness = async() => {
+        try {
+            const response = await fetch(`/api/business/currentBusiness`, {
+                method: "GET"
+            })
+                
+            const responseData = await response.json();
+            setBusiness(responseData.currentBusiness);F
+
+    
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+    */
+
     const getSignIns = async () => {
         try {
             const response = await fetch(`/api/sign_in?business_id=${currentBusiness._id}`, {

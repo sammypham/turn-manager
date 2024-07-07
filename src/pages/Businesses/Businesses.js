@@ -13,9 +13,29 @@ const Businesses = () => {
 
     const [addBusinessModalOpen, setAddBusinessModalOpen] = useState(false);
 
-    const clickBusiness = (business) => {
-        navigate('/home');
-        setCurrentBusiness(business);
+    const clickBusiness = async(business) => {
+        
+        //navigate('/home');
+        //setCurrentBusiness(business);
+        try {
+            const response = await fetch(`/api/business/currentBusiness`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    business
+                })
+            })
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                navigate('/home')
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const clickAddBusiness = () => {

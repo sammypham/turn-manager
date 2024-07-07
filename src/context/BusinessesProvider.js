@@ -5,10 +5,10 @@ export const BusinessesContext = createContext();
 
 export const BusinessesProvider = ({ children }) => {
     const { businesses, refreshBusinesses } = useFetchBusinesses();
-    const [currentBusiness, setCurrentBusiness] = useState({});
+    const {currentBusiness, refreshCurrentBusinesses} = useFetchBusinesses();
 
     return (
-        <BusinessesContext.Provider value={{ businesses, refreshBusinesses, currentBusiness, setCurrentBusiness }}>
+        <BusinessesContext.Provider value={{ businesses, refreshBusinesses, currentBusiness, refreshCurrentBusinesses }}>
             {children}
         </BusinessesContext.Provider>
     );
