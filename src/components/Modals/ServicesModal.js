@@ -43,8 +43,47 @@ const ServicesModal = ({ isOpen, onClose }) => {
         }
     }
 
+    const addTurn = async (service) => {
+        try {
+            const response = await fetch((currentTurn._id ? '/api/service_record/edit' : '/api/service_record'), {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    turn: currentTurn,
+                    technician: currentTechnician,
+                    service: service
+                })
+            })
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                onClose();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const deleteTurn = async () => {
+        if (currentTurn._id) {
+            try {
+                const response = await fetch(`/api/service_record/delete?business_id=${currentBusiness._id}&turn_id=${currentTurn._id}`, {
+                    method: "DELETE"
+                })
+
+                if (response.ok) {
+                    onClose();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
     const clickService = async (service) => {
-        console.log(currentTechnician);
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddServicesModal(service);
@@ -56,27 +95,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
                 deleteService(service);
             }
         } else if (currentTechnician?._id) {
-            try {
-                const response = await fetch((currentTurn ? '/api/service_record/edit' : '/api/service_record'), {
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        turn: currentTurn,
-                        technician: currentTechnician,
-                        service: service
-                    })
-                })
-
-                const responseData = await response.json();
-
-                if (response.ok) {
-                    onClose();
-                }
-            } catch (error) {
-                console.error(error);
-            }
+            addTurn(service);
         }
     }
 
@@ -97,7 +116,6 @@ const ServicesModal = ({ isOpen, onClose }) => {
             return [];
         }
     }
-
 
     const createServiceCard = (service, index) => {
 
@@ -159,6 +177,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
                             &&
                             <button
                                 className={`modal-card`}
+                                onClick={deleteTurn}
                                 style={{ backgroundColor: "red" }}
                             >
                                 {"Delete"}

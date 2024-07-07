@@ -43,4 +43,18 @@ router.post('/edit', async (req, res) => {
     }
 });
 
+router.delete('/delete', async (req, res) => {
+    try {
+        const { business_id, turn_id } = req.query;
+
+        const deletedServiceRecord = await Service_Record.findByIdAndDelete(turn_id);
+
+        res.status(202).json({});
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({});
+    }
+})
+
 module.exports = router
