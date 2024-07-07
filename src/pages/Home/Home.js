@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
@@ -29,63 +29,87 @@ import { useServicesModal } from "../../context/ServicesModalProvider.js";
 import { useSignInModal } from "../../context/SignInModalProvider.js";
 import dayjs from "dayjs";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
+import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
-const technicians = [
-    {
-        name: "Bob",
-        turns: ["Manicure", "Pedicure"]
-    },
-    {
-        name: "Alice",
-        turns: ["Acrylic Nails", "Gel Nails"]
-    },
-    {
-        name: "Charlie",
-        turns: ["Pedicure", "Nail Art"]
-    },
-    {
-        name: "Diana",
-        turns: ["Manicure", "Acrylic Nails"]
-    },
-    {
-        name: "Eve",
-        turns: ["Gel Nails", "Nail Art"]
-    },
-    {
-        name: "Frank",
-        turns: ["Manicure", "Pedicure"]
-    },
-    {
-        name: "Grace",
-        turns: ["Acrylic Nails", "Gel Nails"]
-    },
-    {
-        name: "Hank",
-        turns: ["Pedicure", "Nail Art"]
-    },
-    {
-        name: "Ivy",
-        turns: ["Manicure", "Nail Art"]
-    },
-    {
-        name: "Jack",
-        turns: ["Gel Nails", "Manicure"]
-    },
-    {
-        name: "Karen",
-        turns: ["Acrylic Nails", "Pedicure"]
-    },
-    {
-        name: "Leo",
-        turns: ["Gel Nails", "Nail Art"]
-    },
-];
+// const technicians = [
+//     {
+//         name: "Bob",
+//         turns: ["Manicure", "Pedicure"]
+//     },
+//     {
+//         name: "Alice",
+//         turns: ["Acrylic Nails", "Gel Nails"]
+//     },
+//     {
+//         name: "Charlie",
+//         turns: ["Pedicure", "Nail Art"]
+//     },
+//     {
+//         name: "Diana",
+//         turns: ["Manicure", "Acrylic Nails"]
+//     },
+//     {
+//         name: "Eve",
+//         turns: ["Gel Nails", "Nail Art"]
+//     },
+//     {
+//         name: "Frank",
+//         turns: ["Manicure", "Pedicure"]
+//     },
+//     {
+//         name: "Grace",
+//         turns: ["Acrylic Nails", "Gel Nails"]
+//     },
+//     {
+//         name: "Hank",
+//         turns: ["Pedicure", "Nail Art"]
+//     },
+//     {
+//         name: "Ivy",
+//         turns: ["Manicure", "Nail Art"]
+//     },
+//     {
+//         name: "Jack",
+//         turns: ["Gel Nails", "Manicure"]
+//     },
+//     {
+//         name: "Karen",
+//         turns: ["Acrylic Nails", "Pedicure"]
+//     },
+//     {
+//         name: "Leo",
+//         turns: ["Gel Nails", "Nail Art"]
+//     },
+// ];
 
 const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
     const { currentBusiness } = useContext(BusinessesContext);
+    const { currentTechnician, setCurrentTechnician } = useContext(TurnManagerContext);
+
+    const [signIns, setSignIns] = useState([]);
+
+    const getSignIns = async () => {
+        try {
+            const response = await fetch(`/api/sign_in?business_id=${currentBusiness._id}`, {
+                method: "GET"
+            })
+
+            const responseData = await response.json();
+
+            console.log(responseData.signIns);
+
+            setSignIns(responseData.signIns);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getSignIns();
+    }, [])
 
     const clickClearTracker = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");
@@ -94,14 +118,20 @@ const Home = () => {
         }
     }
 
+    const clickAddTurn = (technician) => {
+        setCurrentTechnician(technician);
+
+        openServicesModal();
+    }
+
     return (
         <>
             <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
             <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
-            <div className="home__business-name">
-                {currentBusiness.name}
-            </div>
             <div className="home__turn-tracker-container">
+                <div className="home__business-name">
+                    {currentBusiness.name}
+                </div>
                 <div className="home__turn-tracker-header">
                     <button onClick={openSignInModal} className="header-button sign-in">
                         Sign In
@@ -115,29 +145,29 @@ const Home = () => {
                 </div>
                 <div className="home__turn-tracker-wrapper">
                     <div className="home__turn-tracker-content-container">
-                        {technicians.map((technician, techIndex) =>
-                            <div key={techIndex} className="home__turn-tracker-row">
+                        {signIns.map((signIn, signInIndex) =>
+                            <div key={signInIndex} className="home__turn-tracker-row">
                                 <div className="technician_name">
                                     <div className="turn-order">
-                                        {techIndex + 1}
+                                        {signInIndex + 1}
                                     </div>
                                     <div className="turn-time">
-                                        {dayjs().format("hh:mm A")} {/*Checkin time*/}
+                                        {dayjs(signIn.time).format("hh:mm A")} {/*Checkin time*/}
                                     </div>
-                                    {technician.name} ({technician.turns.length})
+                                    {signIn.technician.name} ({signIn.services.length})
                                 </div>
-                                {technician.turns.map((turn, turnIndex) =>
-                                    <button onClick={openServicesModal} key={`${techIndex} ${turnIndex}`} className="turn-box">
-                                        {turn.substring(0, 4)}
+                                {signIn.services.map((turn, turnIndex) =>
+                                    <button onClick={openServicesModal} key={`${signInIndex} ${turnIndex}`} className="turn-box">
+                                        {turn.service.name}
                                         <div className="turn-counter">
                                             {turnIndex + 1}
                                         </div>
                                         <div className="turn-time">
-                                            {dayjs().format("hh:mm A")}
+                                            {dayjs(turn.time).format("hh:mm A")}
                                         </div>
                                     </button>
                                 )}
-                                <button onClick={openServicesModal} className="turn-box add-turn">
+                                <button onClick={() => clickAddTurn(signIn.technician)} className="turn-box add-turn">
                                     <AddIcon />
                                 </button>
                             </div>

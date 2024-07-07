@@ -9,21 +9,24 @@ import { AddServicesModalProvider } from './context/AddServicesModalProvider';
 import { SignInModalProvider } from './context/SignInModalProvider';
 import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
 import { BusinessesProvider } from './context/BusinessesProvider';
+import { TurnManagerProvider } from './context/TurnManagerProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BusinessesProvider>
-      <SignInModalProvider>
-        <AddTechnicianModalProvider>
-          <ServicesModalProvider>
-            <AddServicesModalProvider>
-              <App />
-            </AddServicesModalProvider>
-          </ServicesModalProvider>
-        </AddTechnicianModalProvider>
-      </SignInModalProvider>
-    </BusinessesProvider>
+    <TurnManagerProvider>
+      <BusinessesProvider>
+        <SignInModalProvider>
+          <AddTechnicianModalProvider>
+            <ServicesModalProvider>
+              <AddServicesModalProvider>
+                <App />
+              </AddServicesModalProvider>
+            </ServicesModalProvider>
+          </AddTechnicianModalProvider>
+        </SignInModalProvider>
+      </BusinessesProvider>
+    </TurnManagerProvider>
   </React.StrictMode>
 );
 

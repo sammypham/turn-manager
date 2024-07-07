@@ -18,6 +18,8 @@ const techRoute = require('./routes/technicians');
 const servicesRoute = require('./routes/services');
 const loginRoute = require('./routes/googleLogin');
 const businessesRoute = require('./routes/businesses');
+const signInRoute = require('./routes/sign_in');
+const serviceRecordRoute = require('./routes/service_record');
 
 const { User } = require('./models/users');
 const { Business } = require('./models/business');
@@ -37,10 +39,12 @@ app.use(
     })
 );
 
-app.use('/api/tech', techRoute)
-app.use('/api/service', servicesRoute)
-app.use('/auth/google', loginRoute)
-app.use('/api/business', businessesRoute)
+app.use('/api/tech', techRoute);
+app.use('/api/service', servicesRoute);
+app.use('/auth/google', loginRoute);
+app.use('/api/business', businessesRoute);
+app.use('/api/sign_in', signInRoute);
+app.use('/api/service_record', serviceRecordRoute);
 
 async function connectDB() {
     try {

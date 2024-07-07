@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         validateBusinessOwnership(req, res);
 
-        const technicians = await Technician.find({ business_id: new ObjectId(req.query.business_id) });
+        const technicians = await Technician.find({ business: new ObjectId(req.query.business_id) });
 
         return res.status(200).json({ techList: technicians });
     } catch (error) {
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
             res.status(201).json({ techList: technician });
         } else {
             var technician = new Technician({
-                business_id: new ObjectId(req.query.business_id),
+                business: new ObjectId(req.query.business_id),
                 name: req.body.name,
                 pin: req.body.pin,
             });

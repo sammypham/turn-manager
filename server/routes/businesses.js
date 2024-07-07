@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
-        const businesses = await Business.find({ owner_id: new ObjectId(req.session.user_id) });
+        const businesses = await Business.find({ owner: new ObjectId(req.session.user_id) });
 
         res.status(201).json({ businesses: businesses });
     } catch (error) {
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         const newBusiness = new Business(
             {
                 name: req.body.name,
-                owner_id: req.session.user_id
+                owner: req.session.user_id
             }
         );
 

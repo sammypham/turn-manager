@@ -6,12 +6,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import useFetchService from "../../utils/useFetchService.js"
 import { useContext, useState } from "react";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
+import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
 const ServicesModal = ({ isOpen, onClose }) => {
     const { addServicesModalOpen, openAddServicesModal, closeAddServicesModal, newServiceFormData, changes } = useAddServicesModal();
 
     const { services, refreshService } = useFetchService();
     const { currentBusiness } = useContext(BusinessesContext);
+    const { currentTechnician, setCurrentTechnician } = useContext(TurnManagerContext);
 
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
     const [isSelectingDelete, setIsSelectingDelete] = useState(false);
@@ -51,6 +53,25 @@ const ServicesModal = ({ isOpen, onClose }) => {
 
             if (confirm) {
                 deleteService(service);
+            }
+        } else if (currentTechnician?._id) {
+            try {
+                const response = await fetch('/api/service_record', {
+                    method: "POST",
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        technician: currentTechnician,
+                        service: service
+                    })
+                })
+
+                const responseData = await response.json();
+
+                console.log(responseData);
+            } catch (error) {
+                console.error(error);
             }
         }
     }

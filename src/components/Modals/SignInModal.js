@@ -37,7 +37,11 @@ const SignInModal = ({ isOpen, onClose }) => {
             if (confirm) {
                 try {
                     const response = await fetch(`/api/tech?business_id=${currentBusiness._id}&technician_id=${technician._id}`, {
-                        method: "DELETE"
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+
                     })
 
                     refreshTechnician();
@@ -45,6 +49,26 @@ const SignInModal = ({ isOpen, onClose }) => {
                     console.error("Error:", error);
                     return [];
                 }
+            }
+        } else {
+            try {
+                console.log(technician._id);
+
+                const response = await fetch(`/api/sign_in`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        technician_id: technician._id
+                    })
+                })
+
+                const responseData = await response.json();
+
+                console.log(responseData);
+            } catch (error) {
+                console.error(error);
             }
         }
     }

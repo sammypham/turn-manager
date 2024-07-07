@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         validateBusinessOwnership(req, res);
 
-        const services = await Service.find({ business_id: new ObjectId(req.query.business_id) });
+        const services = await Service.find({ business: new ObjectId(req.query.business_id) });
 
         return res.status(200).json({ serviceList: services });
     } catch (error) {
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
         }
         else {
             var services = new Service({
-                business_id: new ObjectId(req.query.business_id),
+                business: new ObjectId(req.query.business_id),
                 name: req.body.name,
                 isHalfTurn: req.body.isHalfTurn,
                 color: req.body.color

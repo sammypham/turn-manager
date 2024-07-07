@@ -16,7 +16,7 @@ const validateBusinessOwnership = async (req, res) => {
         throw new Error('Business not found');
     }
 
-    if (business.owner_id.toString() !== userId.toString()) {
+    if (business.owner.toString() !== userId.toString()) {
         throw new Error('User does not own this business');
     }
 }
