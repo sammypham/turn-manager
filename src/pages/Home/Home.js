@@ -88,6 +88,7 @@ const Home = () => {
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
     const { currentBusiness } = useContext(BusinessesContext);
     const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
+    const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
     const [signIns, setSignIns] = useState([]);
 
@@ -105,15 +106,41 @@ const Home = () => {
         }
     }
 
-    useEffect(() => {
-        getSignIns();
+    const findNextTechnician = () => {
+        const techniciansWithTurnSum = signIns.map(signIn => {
+            const turnSum = signIn.services.reduce((turnSum, turn) => {
+                return turnSum + (turn.service.isHalfTurn ? 0.5 : 1);
+            }, 0);
+            return { technician: signIn.technician, services: signIn.services, turnSum, time: signIn.time };
+        });
 
+        const newSortedTechnicians = techniciansWithTurnSum.sort((a, b) => {
+            if (a.turnSum === b.turnSum) {
+                return new Date(a.time) - new Date(b.time); // Sort by time if turnSum is equal
+            }
+            return a.turnSum - b.turnSum; // Sort by turnSum
+        });
+
+        setSortedTechnicians(newSortedTechnicians);
+        setNextTechnician(newSortedTechnicians.length > 0 ? newSortedTechnicians[0].technician : null);
+    }
+
+    useEffect(() => {
         if (!signInModalOpen && !servicesModalOpen) {
             setCurrentTechnician({});
             setCurrentTurn({});
+            getSignIns();
         }
 
-    }, [signInModalOpen, servicesModalOpen])
+    }, [signInModalOpen, servicesModalOpen]);
+
+    useEffect(() => {
+        getSignIns();
+    }, []);
+
+    useEffect(() => {
+        findNextTechnician();
+    }, [signIns]);
 
     const clickClearTracker = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");
@@ -156,33 +183,35 @@ const Home = () => {
                 </div>
                 <div className="home__turn-tracker-wrapper">
                     <div className="home__turn-tracker-content-container">
-                        {signIns.map((signIn, signInIndex) =>
-                            <div key={signInIndex} className="home__turn-tracker-row">
-                                <div className="technician_name">
-                                    <div className="turn-order">
-                                        {signInIndex + 1}
-                                    </div>
-                                    <div className="turn-time">
-                                        {dayjs(signIn.time).format("hh:mm A")} {/*Checkin time*/}
-                                    </div>
-                                    {signIn.technician.name} ({signIn.services.length})
-                                </div>
-                                {signIn.services.map((turn, turnIndex) =>
-                                    <button onClick={() => clickOpenTurn(turn)} key={`${signInIndex} ${turnIndex}`} className="turn-box">
-                                        {turn.service.name}
-                                        <div className="turn-counter">
-                                            {turnIndex + 1}
+                        {sortedTechnicians
+                            .sort((a, b) => { return new Date(a.time) - new Date(b.time) })
+                            .map((signIn, signInIndex) =>
+                                <div key={signInIndex} className="home__turn-tracker-row">
+                                    <div className="technician_name">
+                                        <div className="turn-order">
+                                            {signInIndex + 1}
                                         </div>
                                         <div className="turn-time">
-                                            {dayjs(turn.time).format("hh:mm A")}
+                                            {dayjs(signIn.time).format("hh:mm A")} {/*Checkin time*/}
                                         </div>
+                                        {signIn.technician.name} ({signIn.turnSum})
+                                    </div>
+                                    {signIn.services.map((turn, turnIndex) =>
+                                        <button onClick={() => clickOpenTurn(turn)} key={`${signInIndex} ${turnIndex}`} className="turn-box">
+                                            {turn.service.name}
+                                            <div className="turn-counter">
+                                                {turnIndex + 1}
+                                            </div>
+                                            <div className="turn-time">
+                                                {dayjs(turn.time).format("hh:mm A")}
+                                            </div>
+                                        </button>
+                                    )}
+                                    <button onClick={() => clickAddTurn(signIn.technician)} className="turn-box add-turn">
+                                        <AddIcon />
                                     </button>
-                                )}
-                                <button onClick={() => clickAddTurn(signIn.technician)} className="turn-box add-turn">
-                                    <AddIcon />
-                                </button>
-                            </div>
-                        )}
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
