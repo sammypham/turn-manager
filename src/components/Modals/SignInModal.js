@@ -52,8 +52,6 @@ const SignInModal = ({ isOpen, onClose }) => {
             }
         } else {
             try {
-                console.log(technician._id);
-
                 const response = await fetch(`/api/sign_in`, {
                     method: "POST",
                     headers: {
@@ -64,9 +62,9 @@ const SignInModal = ({ isOpen, onClose }) => {
                     })
                 })
 
-                const responseData = await response.json();
-
-                console.log(responseData);
+                if (response.ok) {
+                    onClose();
+                }
             } catch (error) {
                 console.error(error);
             }

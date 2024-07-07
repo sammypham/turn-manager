@@ -4,6 +4,7 @@ export const TurnManagerContext = createContext();
 
 export const TurnManagerProvider = ({ children }) => {
     const [currentTechnician, setCurrentTechnician] = useState({});
+    const [currentTurn, setCurrentTurn] = useState({});
 
     return (
         <TurnManagerContext.Provider value={{ currentTechnician, setCurrentTechnician }}>

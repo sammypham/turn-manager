@@ -99,8 +99,6 @@ const Home = () => {
 
             const responseData = await response.json();
 
-            console.log(responseData.signIns);
-
             setSignIns(responseData.signIns);
         } catch (error) {
             console.error(error);
@@ -109,7 +107,7 @@ const Home = () => {
 
     useEffect(() => {
         getSignIns();
-    }, [])
+    }, [signInModalOpen, servicesModalOpen])
 
     const clickClearTracker = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");

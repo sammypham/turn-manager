@@ -69,7 +69,9 @@ const ServicesModal = ({ isOpen, onClose }) => {
 
                 const responseData = await response.json();
 
-                console.log(responseData);
+                if (response.ok) {
+                    onClose();
+                }
             } catch (error) {
                 console.error(error);
             }
