@@ -86,12 +86,12 @@ const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
-    //const { currentBusiness } = useContext(BusinessesContext);
+    const { currentBusiness } = useContext(BusinessesContext);
     const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
 
-    const [currentBusiness, setBusiness] = useState([]);
     const [signIns, setSignIns] = useState([]);
 
+    /*
     const getBusiness = async() => {
         try {
             const response = await fetch(`/api/business/currentBusiness`, {
@@ -99,7 +99,7 @@ const Home = () => {
             })
                 
             const responseData = await response.json();
-            setBusiness(responseData.currentBusiness);
+            setBusiness(responseData.currentBusiness);F
 
     
         } catch (error) {
@@ -107,7 +107,7 @@ const Home = () => {
         }
 
     }
-
+    */
 
     const getSignIns = async () => {
         try {
@@ -125,7 +125,7 @@ const Home = () => {
 
     useEffect(() => {
         getSignIns();
-        getBusiness();
+        
         if (!signInModalOpen && !servicesModalOpen) {
             setCurrentTechnician({});
             setCurrentTurn({});
