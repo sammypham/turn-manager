@@ -7,7 +7,7 @@ export const TurnManagerProvider = ({ children }) => {
     const [currentTurn, setCurrentTurn] = useState({});
 
     return (
-        <TurnManagerContext.Provider value={{ currentTechnician, setCurrentTechnician }}>
+        <TurnManagerContext.Provider value={{ currentTechnician, setCurrentTechnician, currentTurn, setCurrentTurn }}>
             {children}
         </TurnManagerContext.Provider>
     );

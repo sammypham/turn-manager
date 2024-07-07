@@ -87,7 +87,7 @@ const Home = () => {
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
     const { currentBusiness } = useContext(BusinessesContext);
-    const { currentTechnician, setCurrentTechnician } = useContext(TurnManagerContext);
+    const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
 
     const [signIns, setSignIns] = useState([]);
 
@@ -107,6 +107,12 @@ const Home = () => {
 
     useEffect(() => {
         getSignIns();
+
+        if (!signInModalOpen && !servicesModalOpen) {
+            setCurrentTechnician({});
+            setCurrentTurn({});
+        }
+
     }, [signInModalOpen, servicesModalOpen])
 
     const clickClearTracker = () => {
@@ -114,6 +120,13 @@ const Home = () => {
         if (confirm) {
 
         }
+    }
+
+    const clickOpenTurn = (turn) => {
+        setCurrentTechnician(turn.technician);
+        setCurrentTurn(turn);
+
+        openServicesModal();
     }
 
     const clickAddTurn = (technician) => {
@@ -155,7 +168,7 @@ const Home = () => {
                                     {signIn.technician.name} ({signIn.services.length})
                                 </div>
                                 {signIn.services.map((turn, turnIndex) =>
-                                    <button onClick={openServicesModal} key={`${signInIndex} ${turnIndex}`} className="turn-box">
+                                    <button onClick={() => clickOpenTurn(turn)} key={`${signInIndex} ${turnIndex}`} className="turn-box">
                                         {turn.service.name}
                                         <div className="turn-counter">
                                             {turnIndex + 1}

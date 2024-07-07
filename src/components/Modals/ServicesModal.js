@@ -13,7 +13,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
 
     const { services, refreshService } = useFetchService();
     const { currentBusiness } = useContext(BusinessesContext);
-    const { currentTechnician, setCurrentTechnician } = useContext(TurnManagerContext);
+    const { currentTurn, currentTechnician } = useContext(TurnManagerContext);
 
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
     const [isSelectingDelete, setIsSelectingDelete] = useState(false);
@@ -44,6 +44,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
     }
 
     const clickService = async (service) => {
+        console.log(currentTechnician);
         if (isSelectingEdit) {
             setIsSelectingEdit(false);
             openAddServicesModal(service);
@@ -56,12 +57,13 @@ const ServicesModal = ({ isOpen, onClose }) => {
             }
         } else if (currentTechnician?._id) {
             try {
-                const response = await fetch('/api/service_record', {
+                const response = await fetch((currentTurn ? '/api/service_record/edit' : '/api/service_record'), {
                     method: "POST",
                     headers: {
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify({
+                        turn: currentTurn,
                         technician: currentTechnician,
                         service: service
                     })
@@ -152,6 +154,28 @@ const ServicesModal = ({ isOpen, onClose }) => {
                 }
                 <div className="modal-content-wrapper">
                     <div className="modal-content">
+                        {
+                            currentTurn._id
+                            &&
+                            <button
+                                className={`modal-card`}
+                                style={{ backgroundColor: "red" }}
+                            >
+                                {"Delete"}
+                            </button>
+                        }
+                        {
+                            currentTechnician._id
+                            &&
+                            !currentTurn._id
+                            &&
+                            <button
+                                className={`modal-card`}
+                                style={{ backgroundColor: "white" }}
+                            >
+                                {"Skip"}
+                            </button>
+                        }
                         {services
                             .sort((a, b) => a.name.localeCompare(b.name))
                             .map((service, index) =>
