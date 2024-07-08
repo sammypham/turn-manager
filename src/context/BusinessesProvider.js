@@ -4,8 +4,7 @@ import useFetchBusinesses from '../utils/useFetchBusinesses';
 export const BusinessesContext = createContext();
 
 export const BusinessesProvider = ({ children }) => {
-    const { businesses, refreshBusinesses } = useFetchBusinesses();
-    const {currentBusiness, refreshCurrentBusinesses} = useFetchBusinesses();
+    const { businesses, refreshBusinesses, currentBusiness, refreshCurrentBusinesses } = useFetchBusinesses();
 
     return (
         <BusinessesContext.Provider value={{ businesses, refreshBusinesses, currentBusiness, refreshCurrentBusinesses }}>

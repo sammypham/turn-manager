@@ -3,26 +3,6 @@ import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
 
-/*
-technicians.sort(function(a,b) { 
-var firstElementLength = 0;
-var secondElementLength = 0;
-a.turns.forEach(function(currentService) {
-    // Action to perform on each element
-    const firstElement = services.find(service => service.name === currentService)
-    firstElementLength = firstElement.isHalfTurn ? firstElementLength += 0.5 : firstElementLength += 1
-});
-b.turns.forEach(function(currentService) {
-    // Action to perform on each element
-    const secondElement = services.find(service => service.name === currentService)
-    secondElementLength = secondElement.isHalfTurn ? secondElementLength += 0.5 : secondElementLength += 1
-    
-}); 
-return firstElementLength - secondElementLength
-});
-console.log(technicians)
-*/
-
 import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
@@ -30,57 +10,6 @@ import { useSignInModal } from "../../context/SignInModalProvider.js";
 import dayjs from "dayjs";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
-
-// const technicians = [
-//     {
-//         name: "Bob",
-//         turns: ["Manicure", "Pedicure"]
-//     },
-//     {
-//         name: "Alice",
-//         turns: ["Acrylic Nails", "Gel Nails"]
-//     },
-//     {
-//         name: "Charlie",
-//         turns: ["Pedicure", "Nail Art"]
-//     },
-//     {
-//         name: "Diana",
-//         turns: ["Manicure", "Acrylic Nails"]
-//     },
-//     {
-//         name: "Eve",
-//         turns: ["Gel Nails", "Nail Art"]
-//     },
-//     {
-//         name: "Frank",
-//         turns: ["Manicure", "Pedicure"]
-//     },
-//     {
-//         name: "Grace",
-//         turns: ["Acrylic Nails", "Gel Nails"]
-//     },
-//     {
-//         name: "Hank",
-//         turns: ["Pedicure", "Nail Art"]
-//     },
-//     {
-//         name: "Ivy",
-//         turns: ["Manicure", "Nail Art"]
-//     },
-//     {
-//         name: "Jack",
-//         turns: ["Gel Nails", "Manicure"]
-//     },
-//     {
-//         name: "Karen",
-//         turns: ["Acrylic Nails", "Pedicure"]
-//     },
-//     {
-//         name: "Leo",
-//         turns: ["Gel Nails", "Nail Art"]
-//     },
-// ];
 
 const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
@@ -210,7 +139,7 @@ const Home = () => {
                                             {signInIndex + 1}
                                         </div>
                                         <div className="turn-time">
-                                            {dayjs(signIn.time).format("hh:mm A")} {/*Checkin time*/}
+                                            {dayjs(signIn.time).format("hh:mm A")}
                                         </div>
                                         {signIn.technician.name} ({signIn.turnSum})
                                     </div>
