@@ -33,7 +33,7 @@ const Home = () => {
             socket.emit("join_room", currentBusiness._id);
 
             socket.on("receive_home_refresh", (data) => {
-                console.log("RECEIVE_HOME_REFRESH")
+                console.log("RECEIVE_HOME_REFRESH");
                 getSignIns();
             })
 
@@ -45,9 +45,19 @@ const Home = () => {
 
     useEffect(() => {
         if (currentBusiness._id) {
+            getSignIns();
             attemptJoinRoom();
         }
     }, [currentBusiness, socketRef.current]);
+
+    useEffect(() => {
+        return () => {
+            if (socketRef.current) {
+                console.log("DISCONNECT", currentBusiness._id);
+                socketRef.current.disconnect();
+            }
+        }
+    }, []);
 
     const getSignIns = async () => {
         try {
@@ -108,22 +118,6 @@ const Home = () => {
         }
 
     }, [signInModalOpen, servicesModalOpen]);
-
-    useEffect(() => {
-        getSignIns();
-        attemptJoinRoom();
-
-        return () => {
-            console.log("DISCONNECT", currentBusiness._id);
-            socketRef.current.disconnect();
-        }
-    }, []);
-
-    useEffect(() => {
-        getSignIns();
-        attemptJoinRoom();
-
-    }, [currentBusiness])
 
     useEffect(() => {
         findNextTechnician();

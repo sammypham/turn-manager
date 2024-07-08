@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
+        console.log("GET SIGN IN");
+
         const businessId = req.query.business_id;
 
         if (!businessId) {
