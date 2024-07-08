@@ -26,7 +26,7 @@ const useFetchTech = () => {
 
     useEffect(() => {
         refreshTechnician();
-    }, []);
+    }, [currentBusiness]);
 
     return { technicians, refreshTechnician };
 };

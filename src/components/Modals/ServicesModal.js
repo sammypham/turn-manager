@@ -43,6 +43,29 @@ const ServicesModal = ({ isOpen, onClose }) => {
         }
     }
 
+    const skipTurn = async () => {
+        try {
+            const response = await fetch('/api/service_record/skip', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    turn: currentTurn,
+                    technician: currentTechnician
+                })
+            })
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                onClose();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const addTurn = async (service) => {
         try {
             const response = await fetch((currentTurn._id ? '/api/service_record/edit' : '/api/service_record'), {
@@ -180,19 +203,18 @@ const ServicesModal = ({ isOpen, onClose }) => {
                                 onClick={deleteTurn}
                                 style={{ backgroundColor: "red" }}
                             >
-                                {"Delete"}
+                                {"DELETE"}
                             </button>
                         }
                         {
                             currentTechnician._id
                             &&
-                            !currentTurn._id
-                            &&
                             <button
                                 className={`modal-card`}
+                                onClick={skipTurn}
                                 style={{ backgroundColor: "white" }}
                             >
-                                {"Skip"}
+                                {"SKIP"}
                             </button>
                         }
                         {services

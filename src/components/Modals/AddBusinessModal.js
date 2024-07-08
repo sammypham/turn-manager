@@ -36,8 +36,6 @@ const AddBusinessModal = ({ isOpen, onClose }) => {
             const responseData = await response.json()
 
             if (response.ok) {
-                console.log(responseData.newBusiness);
-
                 refreshBusinesses();
                 onClose();
             }

@@ -1,5 +1,6 @@
 const express = require('express');
 const { Service_Record } = require('../models/service_record');
+const { Service } = require('../models/service');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -23,6 +24,38 @@ router.post('/', async (req, res) => {
         res.status(500).json({});
     }
 });
+
+router.post('/skip', async (req, res) => {
+    try {
+        const { turn, technician } = req.body
+
+        if (turn._id) {
+            const updatedRecord = await Service_Record.findByIdAndUpdate(
+                turn._id,
+                {
+                    service: null
+                }
+            )
+
+        } else {
+            const newServiceRecord = new Service_Record(
+                {
+                    service: null,
+                    technician: technician._id,
+                    time: Date()
+                }
+            );
+
+            await newServiceRecord.save()
+        }
+
+        res.status(200).json({});
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({});
+    }
+})
 
 router.post('/edit', async (req, res) => {
     try {

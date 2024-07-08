@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 
 router.get('/currentBusiness', async (req, res) => {
     try {
-        console.log(req.session.currentBusiness)
         res.status(201).json({ currentBusiness: req.session.currentBusiness });
     } catch (error) {
         console.error(error);
@@ -41,10 +40,7 @@ router.post('/', validateLogin, async (req, res) => {
 
 router.post('/currentBusiness', async (req, res) => {
     try {
-        console.log(req.body)
         req.session.currentBusiness = req.body.business;
-        console.log("here")
-        console.log(req.session.currentBusiness)
         res.status(201).json({ currentBusiness: req.session.currentBusiness });
     } catch (error) {
         console.error(error);

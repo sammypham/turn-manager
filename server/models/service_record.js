@@ -8,8 +8,7 @@ const serviceRecordSchema = mongoose.Schema({
     },
     service: {
         type: mongoose.Types.ObjectId,
-        ref: "Service",
-        required: true
+        ref: "Service"
     },
     time: {
         type: Date,

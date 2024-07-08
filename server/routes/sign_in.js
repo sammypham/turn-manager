@@ -5,8 +5,6 @@ const { Technician } = require('../models/technician');
 const { Service_Record } = require('../models/service_record');
 const router = express.Router();
 
-
-
 router.get("/", async (req, res) => {
     try {
         const businessId = req.query.business_id;
@@ -80,6 +78,40 @@ router.post("/", async (req, res) => {
 
             res.status(201).json({ updatedSignIn: updateSignIn });
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json();
+    }
+})
+
+router.post("/clear", async (req, res) => {
+    try {
+        // Step 1: Find and delete the sign-in records
+        const signInsToDelete = await Sign_In.find({
+            business: new ObjectId(req.query.business_id)
+        });
+
+        if (signInsToDelete.length === 0) {
+            return res.status(404).json({ message: "No sign-ins found for the specified business" });
+        }
+
+        // Extract the technician IDs
+        const technicianIds = signInsToDelete.map(signIn => signIn.technician);
+
+        // Delete the sign-in records
+        const deletedSignIns = await Sign_In.deleteMany({
+            business: new ObjectId(req.query.business_id)
+        });
+
+        // Step 2: Delete the associated service records
+        const deletedServiceRecords = await Service_Record.deleteMany({
+            technician: { $in: technicianIds }
+        });
+
+        res.status(202).json({
+            deletedSignIns,
+            deletedServiceRecords
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json();

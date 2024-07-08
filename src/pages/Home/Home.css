@@ -103,14 +103,26 @@
 .turn-box.next-turn {
     font-size: 24px;
     font-weight: bolder;
-    box-shadow: 0px 0px 10px 5px rgba(100, 100, 255, 1);
+    box-shadow: 0px 0px 5px 4px rgba(100, 100, 255, 1);
     text-shadow: none;
     color: var(--black);
 }
 
 .home__turn-tracker-row .turn-box:hover {
     color: var(--white);
+    box-shadow: none;
     background-color: var(--primary-color);
+}
+
+.turn-box.skip {
+    font-weight: bolder;
+    color: red;
+    text-shadow: none;
+    box-shadow: 0px 0px 0px 3px rgba(255, 100, 100, 1);
+}
+
+.turn-box.skip .turn-name {
+    font-size: 28px;
 }
 
 .turn-order {
