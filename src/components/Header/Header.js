@@ -4,6 +4,7 @@ import "./Header.css"
 
 const dayjs = require('dayjs')
 
+
 const logoutFunction = async () => {
     try {
         const response = await fetch('/auth/google/logout', {
@@ -33,9 +34,13 @@ const Header = () => {
                 <NavLink to={"/login"} className="login-button" >
                     Login
                 </NavLink>
-                <button style={{ marginLeft: 10 }} className="login-button" onClick={logoutFunction}>
-                    Logout
+                <button style={{ marginLeft: 10 }} className="login-button">
+                
+  
+                <a href="/logout" class="link">Logout</a>
+             
                 </button>
+      
             </div >
             <Outlet />
         </>

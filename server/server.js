@@ -39,6 +39,7 @@ app.use(
     })
 );
 
+
 app.use('/api/tech', techRoute);
 app.use('/api/service', servicesRoute);
 app.use('/auth/google', loginRoute);

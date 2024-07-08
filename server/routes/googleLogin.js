@@ -80,8 +80,13 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 );
 
 router.get('/logout', (req, res) => {
-    console.log(req.session.user_id);
+    res.render('Logout')
+}
+);
 
+router.get('/logoutCallback', (req, res) => {
+    console.log(req.session.user_id);
+    req.session.currentBusiness = undefined;
     req.logout((err) => {
         if (err) {
             // Handle error, e.g., logging or sending an error response
