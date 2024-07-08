@@ -13,10 +13,10 @@ const Businesses = () => {
 
     const [addBusinessModalOpen, setAddBusinessModalOpen] = useState(false);
 
-    const clickBusiness = async(business) => {
-        
+    const clickBusiness = async (business) => {
+
         //navigate('/home');
-        //setCurrentBusiness(business);
+        setCurrentBusiness(business);
         try {
             const response = await fetch(`/api/business/currentBusiness`, {
                 method: "POST",
