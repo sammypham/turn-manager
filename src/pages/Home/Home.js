@@ -21,24 +21,6 @@ const Home = () => {
 
     const [signIns, setSignIns] = useState([]);
 
-    /*
-    const getBusiness = async() => {
-        try {
-            const response = await fetch(`/api/business/currentBusiness`, {
-                method: "GET"
-            })
-                
-            const responseData = await response.json();
-            setBusiness(responseData.currentBusiness);F
-
-    
-        } catch (error) {
-            console.error(error);
-        }
-
-    }
-    */
-
     const getSignIns = async () => {
         try {
             const response = await fetch(`/api/sign_in?business_id=${currentBusiness._id}`, {
@@ -65,7 +47,8 @@ const Home = () => {
             if (a.turnSum === b.turnSum) {
                 return new Date(a.time) - new Date(b.time); // Sort by time if turnSum is equal
             }
-            return a.turnSum - b.turnSum; // Sort by turnSum
+            return Math.floor
+                (a.turnSum) - Math.floor(b.turnSum); // Sort by turnSum
         });
 
         setSortedTechnicians(newSortedTechnicians);
@@ -144,7 +127,11 @@ const Home = () => {
                                         {signIn.technician.name} ({signIn.turnSum})
                                     </div>
                                     {signIn.services.map((turn, turnIndex) =>
-                                        <button onClick={() => clickOpenTurn(turn)} key={`${signInIndex} ${turnIndex}`} className="turn-box">
+                                        <button onClick={() => clickOpenTurn(turn)}
+                                            key={`${signInIndex} ${turnIndex}`}
+                                            className={`turn-box ${turn.service.isHalfTurn ? " slashed" : ""}`}
+                                            style={{ '--service-color': `${turn.service.color}` }}
+                                        >
                                             {turn.service.name}
                                             <div className="turn-counter">
                                                 {turnIndex + 1}
