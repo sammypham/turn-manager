@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
@@ -11,6 +11,8 @@ import dayjs from "dayjs";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
+import { io } from "socket.io-client";
+
 const Home = () => {
     const navigate = useNavigate()
     const [nextTechnician, setNextTechnician] = useState(null);
@@ -21,6 +23,35 @@ const Home = () => {
     const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
     const [signIns, setSignIns] = useState([]);
+
+    const socketRef = useRef(null);
+    const [socketConnected, setSocketConnected] = useState(false);
+
+    const getSocket = () => {
+        return socketRef.current;
+    }
+
+    const attemptJoinRoom = () => {
+        if (!socketConnected) {
+            const socket = io.connect("http://localhost:4000")
+            socket.emit("join_room", currentBusiness._id);
+
+            socket.on("receive_home_refresh", (data) => {
+                console.log("RECEIVE_HOME_REFRESH")
+                getSignIns();
+            })
+
+            socketRef.current = socket;
+
+            setSocketConnected(true);
+        }
+    }
+
+    useEffect(() => {
+        if (currentBusiness._id) {
+            attemptJoinRoom();
+        }
+    }, [currentBusiness, socketRef.current]);
 
     const getSignIns = async () => {
         try {
@@ -74,13 +105,29 @@ const Home = () => {
             setCurrentTechnician({});
             setCurrentTurn({});
             getSignIns();
+
+            if (socketRef.current) {
+                socketRef.current.emit("refresh_home", { room: currentBusiness._id });
+            }
         }
 
     }, [signInModalOpen, servicesModalOpen]);
 
     useEffect(() => {
         getSignIns();
+        attemptJoinRoom();
+
+        return () => {
+            console.log("DISCONNECT", currentBusiness._id);
+            socketRef.current.disconnect();
+        }
     }, []);
+
+    useEffect(() => {
+        getSignIns();
+        attemptJoinRoom();
+
+    }, [currentBusiness])
 
     useEffect(() => {
         findNextTechnician();
@@ -117,6 +164,7 @@ const Home = () => {
 
         openServicesModal();
     }
+
     if (currentBusiness) {
         return (
             <>

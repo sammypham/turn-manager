@@ -5,6 +5,7 @@ const useFetchService = () => {
     const { currentBusiness } = useContext(BusinessesContext);
 
     const [services, setServices] = useState([]); // Initialize data as an empty array
+
     const refreshService = async () => {
         try {
             const response = await fetch(`/api/service?business_id=${currentBusiness._id}`, {
