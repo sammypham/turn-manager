@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-
+import useFetchUser from "../../utils/useFetchUser.js"
 import "./Header.css"
 
 const dayjs = require('dayjs')
@@ -15,8 +15,28 @@ const logoutFunction = async () => {
     }
 }
 
+const loggedIn = (user) => {
+    console.log(user.user)
+    if (user.user) {
+        return(
+            <button style={{ marginLeft: 10 }} className="login-button">
+                <a href="/logout" class="link">Logout</a>
+         
+            </button>
+        )
+
+    }
+    else {
+        return (  
+            <NavLink to={"/login"} className="login-button" >
+                  Login
+              </NavLink>)
+    }
+}
+
 const Header = () => {
     const location = useLocation();
+    const user = useFetchUser();
 
     return (
         <>
@@ -31,20 +51,12 @@ const Header = () => {
                 <div style={{ height: "100%", alignContent: "center", padding: 10 }}>
                     {dayjs().format("ddd, MMMM D YYYY, hh:mm A")}
                 </div>
-                <NavLink to={"/login"} className="login-button" >
-                    Login
-                </NavLink>
-                <button style={{ marginLeft: 10 }} className="login-button">
+                {loggedIn(user)}
                 
-  
-                <a href="/logout" class="link">Logout</a>
-             
-                </button>
-      
             </div >
             <Outlet />
         </>
-    )
+    );
 }
 
 export default Header;

@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/', validateBusinessOwnership, async (req, res) => {
     try {
 
-        const services = await Service.find({ business: new ObjectId(req.query.business_id) });
+        const services = await Service.find({ business: new ObjectId(req.session.currentBusiness._id) });
 
         return res.status(200).json({ serviceList: services });
     } catch (error) {
@@ -28,7 +28,7 @@ router.post('/', validateBusinessOwnership,async (req, res) => {
         }
         else {
             var services = new Service({
-                business: new ObjectId(req.query.business_id),
+                business: new ObjectId(req.session.currentBusiness._id),
                 name: req.body.name,
                 isHalfTurn: req.body.isHalfTurn,
                 color: req.body.color

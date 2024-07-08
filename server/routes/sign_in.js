@@ -7,8 +7,6 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-        console.log("GET SIGN IN");
-
         const businessId = req.query.business_id;
 
         if (!businessId) {
@@ -16,6 +14,7 @@ router.get("/", async (req, res) => {
         }
 
         // Fetch the sign-ins and populate the relevant fields
+        console.log(businessId)
         const signIns = await Sign_In.find({ business: new ObjectId(businessId) })
             .populate('business')
             .populate('technician');

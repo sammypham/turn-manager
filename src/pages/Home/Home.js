@@ -43,6 +43,7 @@ const Home = () => {
         }
     }
 
+    /*
     useEffect(() => {
         if (currentBusiness._id) {
             getSignIns();
@@ -116,8 +117,23 @@ const Home = () => {
                 socketRef.current.emit("refresh_home", { room: currentBusiness._id });
             }
         }
-
     }, [signInModalOpen, servicesModalOpen]);
+
+    useEffect(() => {
+        getSignIns();
+        attemptJoinRoom();
+
+        return () => {
+            console.log("DISCONNECT", currentBusiness._id);
+            socketRef.current.disconnect();
+        }
+    }, []);
+
+    useEffect(() => {
+        getSignIns();
+        attemptJoinRoom();
+
+    }, [currentBusiness])
 
     useEffect(() => {
         findNextTechnician();
@@ -130,9 +146,7 @@ const Home = () => {
                 const response = await fetch(`/api/sign_in/clear?business_id=${currentBusiness._id}`, {
                     method: "POST"
                 })
-
                 const responseData = await response.json();
-
                 if (response.ok) {
                     getSignIns();
                 }

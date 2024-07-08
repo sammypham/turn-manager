@@ -18,7 +18,7 @@ const Logout = () => {
             }
     
             // Redirect to the homepage after successful logout
-            navigate("/login");
+            navigate("/login"); 
           } catch (error) {
             console.error("Error:", error);
             // Handle error gracefully (e.g., show error message)
