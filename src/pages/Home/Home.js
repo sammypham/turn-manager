@@ -117,7 +117,7 @@ const Home = () => {
                             .sort((a, b) => { return new Date(a.time) - new Date(b.time) })
                             .map((signIn, signInIndex) =>
                                 <div key={signInIndex} className="home__turn-tracker-row">
-                                    <div className="technician_name">
+                                    <div className={`technician_name ${nextTechnician === signIn.technician ? " next-turn" : "add-turn"}`}>
                                         <div className="turn-order">
                                             {signInIndex + 1}
                                         </div>
@@ -141,8 +141,8 @@ const Home = () => {
                                             </div>
                                         </button>
                                     )}
-                                    <button onClick={() => clickAddTurn(signIn.technician)} className="turn-box add-turn">
-                                        <AddIcon />
+                                    <button onClick={() => clickAddTurn(signIn.technician)} className={`turn-box ${nextTechnician === signIn.technician ? "next-turn" : "add-turn"}`}>
+                                        {nextTechnician === signIn.technician ? "NEXT" : <AddIcon />}
                                     </button>
                                 </div>
                             )}
