@@ -7,6 +7,7 @@ import useFetchService from "../../utils/useFetchService.js"
 import { useContext, useState } from "react";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
+import { Height } from "@mui/icons-material";
 
 const ServicesModal = ({ isOpen, onClose }) => {
     const { addServicesModalOpen, openAddServicesModal, closeAddServicesModal, newServiceFormData, changes } = useAddServicesModal();
@@ -148,6 +149,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
                 className={`modal-card ${service.isHalfTurn ? "slashed" : ""}`}
                 key={index}
                 style={{ '--service-color': `${service.color}` }}
+                title={`Set Turn ${service.name}`}
             >
                 {service ? service.name : "Service Name"}
             </button>
@@ -199,20 +201,22 @@ const ServicesModal = ({ isOpen, onClose }) => {
                             currentTurn._id
                             &&
                             <button
-                                className={`modal-card`}
+                                className={`modal-card delete`}
                                 onClick={deleteTurn}
                                 style={{ backgroundColor: "red" }}
+                                title="Delete Turn"
                             >
-                                {"DELETE"}
+                                <CloseIcon style={{ height: "100%", width: "100%" }} />
                             </button>
                         }
                         {
                             currentTechnician._id
                             &&
                             <button
-                                className={`modal-card`}
+                                className={`modal-card skip`}
                                 onClick={skipTurn}
                                 style={{ backgroundColor: "white" }}
+                                title="Skip Turn"
                             >
                                 {"SKIP"}
                             </button>

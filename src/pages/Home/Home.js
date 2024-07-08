@@ -127,13 +127,20 @@ const Home = () => {
                         {currentBusiness.name}
                     </div>
                     <div className="home__turn-tracker-header">
-                        <button onClick={openSignInModal} className="header-button sign-in">
+                        <button
+                            onClick={openSignInModal}
+                            className="header-button sign-in"
+                            title="Sign In">
                             Sign In
                         </button>
                         <div style={{ height: "100%", alignContent: "center" }}>
                             Next Technician: <b>{nextTechnician ? nextTechnician.name : "none"}</b>
                         </div>
-                        <button onClick={clickClearTracker} className="header-button clear">
+                        <button
+                            onClick={clickClearTracker}
+                            className="header-button clear"
+                            title="Clear Turns"
+                        >
                             Clear
                         </button>
                     </div>
@@ -157,6 +164,7 @@ const Home = () => {
                                                 key={`${signInIndex} ${turnIndex}`}
                                                 className={`turn-box ${turn.service.isHalfTurn ? " slashed" : ""} ${turn.service.isSkip && "skip"}`}
                                                 style={{ '--service-color': `${turn.service.color}` }}
+                                                title="Edit Turn"
                                             >
                                                 <div className="turn-name">
                                                     {turn.service.name}
@@ -169,7 +177,11 @@ const Home = () => {
                                                 </div>
                                             </button>
                                         )}
-                                        <button onClick={() => clickAddTurn(signIn.technician)} className={`turn-box ${nextTechnician === signIn.technician ? "next-turn" : "add-turn"}`}>
+                                        <button
+                                            onClick={() => clickAddTurn(signIn.technician)}
+                                            className={`turn-box ${nextTechnician === signIn.technician ? "next-turn" : "add-turn"}`}
+                                            title="Add Turn"
+                                        >
                                             {nextTechnician === signIn.technician ? "NEXT" : <AddIcon />}
                                         </button>
                                     </div>

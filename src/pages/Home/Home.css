@@ -118,7 +118,7 @@
     font-weight: bolder;
     color: red;
     text-shadow: none;
-    box-shadow: 0px 0px 0px 3px rgba(255, 100, 100, 1);
+    outline: 3px rgba(255, 100, 100, 1) dashed;
 }
 
 .turn-box.skip .turn-name {
@@ -283,6 +283,19 @@
     background-color: var(--primary-color);
     color: var(--white);
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.modal-card.delete {
+    font-size: 32px;
+    text-shadow: none;
+}
+
+.modal-card.skip {
+    font-weight: bolder;
+    color: red;
+    text-shadow: none;
+    outline: 3px rgba(255, 100, 100, 1) dashed;
+    font-size: 32px;
 }
 
 .modal-button-header {
