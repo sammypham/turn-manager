@@ -94,7 +94,6 @@ const Home = () => {
     }
     if (currentBusiness) {
         return (
-
         <>
             <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
             <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
