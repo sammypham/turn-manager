@@ -1,6 +1,7 @@
 const express = require('express');
 const { Business } = require('../models/business');
 const { ObjectId } = require('mongodb');
+const validateLogin = require('../util/validateLogin');
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -21,7 +22,7 @@ router.get('/currentBusiness', async (req, res) => {
         console.error(error);
     }
 });
-router.post('/', async (req, res) => {
+router.post('/', validateLogin, async (req, res) => {
     try {
         const newBusiness = new Business(
             {
