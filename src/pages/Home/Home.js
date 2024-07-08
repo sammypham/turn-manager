@@ -27,10 +27,6 @@ const Home = () => {
     const socketRef = useRef(null);
     const [socketConnected, setSocketConnected] = useState(false);
 
-    const getSocket = () => {
-        return socketRef.current;
-    }
-
     const attemptJoinRoom = () => {
         if (!socketConnected) {
             const socket = io.connect("http://localhost:4000")
