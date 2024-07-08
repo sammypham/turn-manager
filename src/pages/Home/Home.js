@@ -130,8 +130,8 @@ const Home = () => {
                         <button
                             onClick={openSignInModal}
                             className="header-button sign-in"
-                            title="Sign In">
-                            Sign In
+                            title="Technician Sign In">
+                            Technician Sign In
                         </button>
                         <div style={{ height: "100%", alignContent: "center" }}>
                             Next Technician: <b>{nextTechnician ? nextTechnician.name : "none"}</b>
