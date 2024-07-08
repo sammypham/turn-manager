@@ -1,0 +1,24 @@
+.login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    min-height: 350px;
+    min-width: 300px;
+}
+
+.login-container .login-title {
+    font-size: 32px;
+    font-weight: bolder;
+}
+
+.login-container .login-header {
+    font-size: 24px;
+    font-weight: bolder;
+    margin: 10px 0px;
+}

@@ -4,10 +4,29 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { ServicesModalProvider } from './context/ServicesModalProvider';
+import { AddServicesModalProvider } from './context/AddServicesModalProvider';
+import { SignInModalProvider } from './context/SignInModalProvider';
+import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
+import { BusinessesProvider } from './context/BusinessesProvider';
+import { TurnManagerProvider } from './context/TurnManagerProvider';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <TurnManagerProvider>
+      <BusinessesProvider>
+        <SignInModalProvider>
+          <AddTechnicianModalProvider>
+            <ServicesModalProvider>
+              <AddServicesModalProvider>
+                <App />
+              </AddServicesModalProvider>
+            </ServicesModalProvider>
+          </AddTechnicianModalProvider>
+        </SignInModalProvider>
+      </BusinessesProvider>
+    </TurnManagerProvider>
   </React.StrictMode>
 );
 

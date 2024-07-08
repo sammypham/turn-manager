@@ -1,113 +1,71 @@
+require('dotenv').config();
+
+const mongoose = require('mongoose');
 const express = require('express')
+const session = require('express-session')
 const cors = require('cors')
-const bodyParser = require('body-parser')
-
 const app = express()
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-
-const corsOptions = {
-    origin: '*',
-    credentials: true,
-    optionSucessStatus: 200
-}
-app.use(cors(corsOptions))
-
 const port = 4000
-app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-});
 
-
-
-/*const express = require('express');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const path = require('path');
-const fs = require('fs');
-
-const app = express();
-app.use(express.json());
-app.set('views', '../src/pages')
-const PORT = process.env.PORT || 3003;
-
-
-
-
-
-
-
-//const { connectDB } = require("./db");
-//require("dotenv").config({ path: "./config/config.env" });
-
-
-
-const servicesRoute = require("./routes/services");
-const employeesRoute = require("./routes/employees");
-const scheduleRoute = require("./routes/schedule");
-const appointmentsRoute = require("./routes/appointment");
-const clientsRoute = require("./routes/clients");
-const userSettingsRoute = require("./routes/userSettings");
+// cors
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,  // enable credentials (cookies, authorization headers)
+}));
 
 // Routes
-app.use("/api/services", servicesRoute);
-app.use("/api/employees", employeesRoute);
-app.use("/api/schedule", scheduleRoute);
-app.use("/api/appointments", appointmentsRoute);
-app.use("/api/clients", clientsRoute);
-app.use("/api/settings", userSettingsRoute);
+const techRoute = require('./routes/technicians');
+const servicesRoute = require('./routes/services');
+const loginRoute = require('./routes/googleLogin');
+const businessesRoute = require('./routes/businesses');
+const signInRoute = require('./routes/sign_in');
+const serviceRecordRoute = require('./routes/service_record');
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+const { User } = require('./models/users');
+const { Business } = require('./models/business');
+const { Technician } = require('./models/technician');
+const { Service } = require('./models/service');
 
-// GET CALL EXAMPLE
-/*
-const reloadServices = async () => {
+// Middleware
+app.use(express.json());
+
+// session variable
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,     // Secret key to sign the session ID cookie
+        resave: false,                      // Don't save session if unmodified
+        saveUninitialized: false,           // Don't create session until something stored
+        cookie: { secure: false },          // True if using https. Set to false for development without https
+    })
+);
+
+
+app.set('views', __dirname);
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+
+app.use('/api/tech', techRoute);
+app.use('/api/service', servicesRoute);
+app.use('/auth/google', loginRoute);
+app.use('/api/business', businessesRoute);
+app.use('/api/sign_in', signInRoute);
+app.use('/api/service_record', serviceRecordRoute);
+
+
+
+async function connectDB() {
     try {
-        const response = await fetch("/api/services", {
-            method: "GET",
-        })
+        await mongoose.connect(process.env.ATLAS_URI);
+        db = mongoose.connection;
 
-        const responseData = await response.json();
-
-        if (response.ok) {
-            setServices(responseData);
-        }
+        console.log("Connected to MongoDB Atlas");
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error connecting to MongoDB Atlas:", error);
+        process.exit(1); // Exit the process if unable to connect to the database
     }
 }
-*/
-// POST CALL EXAMPLE
-/*
-const addStaff = async () => {
-    const newStaff = {
-        ...selectedStaff,
-        name: staffName
-    }
 
-    try {
-        const response = await fetch(editingStaff ? `/api/employees/update/data?id=${newStaff._id}` : "/api/employees/add",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newStaff)
-            })
-
-        const responseData = await response.json();
-
-        if (response.ok) {
-            closeNewStaffModal();
-            reloadEmployees();
-        } else {
-            alert(responseData.message);
-            console.error(response.statusText);
-        }
-    } catch (error) {
-        console.error('Error adding staff:', error);
-    }
-}*/
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+    connectDB();
+});
