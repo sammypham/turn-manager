@@ -43,14 +43,14 @@ const Home = () => {
         }
     }
 
-    /*
+    
     useEffect(() => {
         if (currentBusiness._id) {
             getSignIns();
             attemptJoinRoom();
         }
     }, [currentBusiness, socketRef.current]);
-
+    
     useEffect(() => {
         return () => {
             if (socketRef.current) {
@@ -119,21 +119,6 @@ const Home = () => {
         }
     }, [signInModalOpen, servicesModalOpen]);
 
-    useEffect(() => {
-        getSignIns();
-        attemptJoinRoom();
-
-        return () => {
-            console.log("DISCONNECT", currentBusiness._id);
-            socketRef.current.disconnect();
-        }
-    }, []);
-
-    useEffect(() => {
-        getSignIns();
-        attemptJoinRoom();
-
-    }, [currentBusiness])
 
     useEffect(() => {
         findNextTechnician();

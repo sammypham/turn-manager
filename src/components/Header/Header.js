@@ -19,7 +19,7 @@ const loggedIn = (user) => {
     console.log(user.user)
     if (user.user) {
         return(
-            <button style={{ marginLeft: 10 }} className="login-button">
+            <button style={{ marginLeft: "auto" }} className="login-button">
                 <a href="/logout" class="link">Logout</a>
          
             </button>

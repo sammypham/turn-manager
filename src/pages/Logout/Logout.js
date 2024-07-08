@@ -18,7 +18,7 @@ const Logout = () => {
             }
     
             // Redirect to the homepage after successful logout
-            navigate("/login"); 
+            navigate("/businesses"); 
           } catch (error) {
             console.error("Error:", error);
             // Handle error gracefully (e.g., show error message)
@@ -29,7 +29,7 @@ const Logout = () => {
       }, [navigate]);
     return (
         <div>
-            
+      
         </div>
     );
 };

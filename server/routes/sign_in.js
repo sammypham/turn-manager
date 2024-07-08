@@ -7,12 +7,11 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-        const businessId = req.query.business_id;
-
-        if (!businessId) {
+        const business = req.session.currentBusiness;
+        if (!business) {
             return res.status(400).json({ message: "Business ID is required" });
         }
-
+        const businessId = req.session.currentBusiness._id;
         // Fetch the sign-ins and populate the relevant fields
         console.log(businessId)
         const signIns = await Sign_In.find({ business: new ObjectId(businessId) })

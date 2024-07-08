@@ -93,9 +93,8 @@ router.get('/logoutCallback', (req, res) => {
             console.error('Error during logout:', err);
             return res.status(500).json({ error: 'Logout failed' });
         }
-        // Successful logout
-        res.redirect('/'); // Redirect or respond as needed
     });
+    res.status(200).json({});
 }
 );
 
