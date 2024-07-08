@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
-
+import { useNavigate } from "react-router-dom";
 import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
@@ -12,6 +12,7 @@ import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
 const Home = () => {
+    const navigate = useNavigate()
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
@@ -91,8 +92,9 @@ const Home = () => {
 
         openServicesModal();
     }
+    if (currentBusiness) {
+        return (
 
-    return (
         <>
             <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
             <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
@@ -151,6 +153,10 @@ const Home = () => {
             </div>
         </>
     )
+    }
+    else {
+        navigate('/login');
+    }
 }
 
 export default Home;

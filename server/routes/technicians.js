@@ -5,10 +5,10 @@ const { ObjectId } = require('mongodb');
 const validateBusinessOwnership = require('../util/validateBusinessOwnership');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    try {
-        validateBusinessOwnership(req, res);
 
+
+router.get('/', validateBusinessOwnership, async (req, res) => {
+    try {
         const technicians = await Technician.find({ business: new ObjectId(req.query.business_id) });
 
         return res.status(200).json({ techList: technicians });
@@ -19,10 +19,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', validateBusinessOwnership, async (req, res) => {
     try {
-        validateBusinessOwnership(req, res);
-
         if (req.body.isEditing) {
             var technician = await Technician.findByIdAndUpdate(req.body._id, req.body);
             await technician.save();
@@ -42,9 +40,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', validateBusinessOwnership, async (req, res) => {
     try {
-        validateBusinessOwnership(req, res);
 
         const deletedTechnician = await Technician.deleteOne({ _id: req.query.technician_id });
 

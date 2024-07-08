@@ -47,6 +47,8 @@ app.use('/api/business', businessesRoute);
 app.use('/api/sign_in', signInRoute);
 app.use('/api/service_record', serviceRecordRoute);
 
+
+
 async function connectDB() {
     try {
         await mongoose.connect(process.env.ATLAS_URI);

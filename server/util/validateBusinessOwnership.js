@@ -1,24 +1,15 @@
 const { ObjectId } = require('mongodb');
 const { Business } = require('../models/business');
 
-const validateBusinessOwnership = async (req, res) => {
-    // const businessId = req.query.business_id;
-    // const userId = req.session.user_id;
+const validateBusinessOwnership = async (req, res, next) => {
 
-    // if (!businessId || !userId) {
-    //     throw new Error('Business ID and User ID are required');
-    // }
-
-    // // Find the business and check ownership
-    // const business = await Business.findOne({ _id: new ObjectId(businessId) });
-
-    // if (!business) {
-    //     throw new Error('Business not found');
-    // }
-
-    // if (business.owner.toString() !== userId.toString()) {
-    //     throw new Error('User does not own this business');
-    // }
+    if (req.session.currentBusiness.owner == req.session.userId) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+    
 }
+    
 
 module.exports = validateBusinessOwnership
