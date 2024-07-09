@@ -5,9 +5,9 @@ const useFetchBusinesses = () => {
     const [businesses, setBusinesses] = useState([]);
     const [currentBusiness, setCurrentBusiness] = useState(null);
 
-    const useFetchBusinessById = async (business_id) => {
+    const refreshCurrentBusiness = async () => {
         try {
-            const response = await fetch(`/api/business/single/${business_id}`, {
+            const response = await fetch("/api/business/currentBusiness", {
                 method: "GET",
             });
 
@@ -17,9 +17,9 @@ const useFetchBusinesses = () => {
 
             const responseData = await response.json();
 
-            console.log(responseData.business);
+            console.log(responseData.currentBusiness);
 
-            setCurrentBusiness(responseData.business);
+            setCurrentBusiness(responseData.currentBusiness);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -38,6 +38,7 @@ const useFetchBusinesses = () => {
             const responseData = await response.json();
 
             setBusinesses(responseData.businesses);
+            console.log(response.businesses)
         } catch (error) {
             console.error("Error:", error);
         }
@@ -45,9 +46,10 @@ const useFetchBusinesses = () => {
 
     useEffect(() => {
         refreshBusinesses();
+        refreshCurrentBusiness();
     }, []);
 
-    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, useFetchBusinessById };
+    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, refreshCurrentBusiness };
 };
 
 export default useFetchBusinesses;

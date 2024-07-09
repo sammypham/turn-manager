@@ -20,7 +20,7 @@ const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
-    const { currentBusiness, useFetchBusinessById } = useContext(BusinessesContext);
+    const { currentBusiness, refreshCurrentBusiness,refreshBusinesses} = useContext(BusinessesContext);
     const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
     const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
@@ -28,6 +28,8 @@ const Home = () => {
 
     const socketRef = useRef(null);
     const [socketConnected, setSocketConnected] = useState(false);
+
+    const [businessName, setBusinessName] = useState("");
 
     const attemptJoinRoom = () => {
         if (!socketConnected) {
@@ -157,6 +159,12 @@ const Home = () => {
         openServicesModal();
     }
 
+
+    useEffect(() => {
+        console.log("test")
+        refreshCurrentBusiness();
+        console.log(currentBusiness)
+    },[currentBusiness])
     if (business_id) {
         return (
             <>
