@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 const useFetchBusinesses = () => {
     const [businesses, setBusinesses] = useState([]);
     const [currentBusiness, setCurrentBusiness] = useState(null);
 
-    const refreshCurrentBusiness = async () => {
+    const getBusinessById = async (business_id) => {
         try {
-            const response = await fetch("/api/business/currentBusiness", {
+            const response = await fetch(`/api/business/single/${business_id}`, {
                 method: "GET",
             });
 
@@ -17,9 +16,7 @@ const useFetchBusinesses = () => {
 
             const responseData = await response.json();
 
-            console.log(responseData.currentBusiness);
-
-            setCurrentBusiness(responseData.currentBusiness);
+            setCurrentBusiness(responseData.business);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -38,7 +35,6 @@ const useFetchBusinesses = () => {
             const responseData = await response.json();
 
             setBusinesses(responseData.businesses);
-            console.log(response.businesses)
         } catch (error) {
             console.error("Error:", error);
         }
@@ -46,10 +42,9 @@ const useFetchBusinesses = () => {
 
     useEffect(() => {
         refreshBusinesses();
-        refreshCurrentBusiness();
     }, []);
 
-    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, refreshCurrentBusiness };
+    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, getBusinessById };
 };
 
 export default useFetchBusinesses;

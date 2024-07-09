@@ -20,16 +20,14 @@ const Home = () => {
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
-    const { currentBusiness, refreshCurrentBusiness,refreshBusinesses} = useContext(BusinessesContext);
-    const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
+    const { currentBusiness, getBusinessById } = useContext(BusinessesContext);
+    const { setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
     const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
     const [signIns, setSignIns] = useState([]);
 
     const socketRef = useRef(null);
     const [socketConnected, setSocketConnected] = useState(false);
-
-    const [businessName, setBusinessName] = useState("");
 
     const attemptJoinRoom = () => {
         if (!socketConnected) {
@@ -50,6 +48,8 @@ const Home = () => {
     }
 
     useEffect(() => {
+        getBusinessById(business_id);
+
         return () => {
             if (socketRef.current) {
                 console.log("DISCONNECT", business_id);
@@ -137,7 +137,6 @@ const Home = () => {
                 })
                 const responseData = await response.json();
                 if (response.ok) {
-
                     getSignIns();
                 }
             } catch (error) {
@@ -159,11 +158,6 @@ const Home = () => {
         openServicesModal();
     }
 
-
-    useEffect(() => {
-        console.log("test")
-        console.log(currentBusiness)
-    },[currentBusiness])
     if (business_id) {
         return (
             <>
@@ -178,7 +172,7 @@ const Home = () => {
                             onClick={openSignInModal}
                             className="header-button sign-in"
                             title="Technician Sign In">
-                            Technician Sign In
+                            Sign In
                         </button>
                         <div style={{ height: "100%", alignContent: "center" }}>
                             Next Technician: <b>{nextTechnician ? nextTechnician.name : "none"}</b>
