@@ -13,7 +13,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Logout />} />
       <Route path="/" element={<Header />}>
-        <Route path="/home" element={<Home />} />
+        <Route path="/home/:business_id" element={<Home />} />
         <Route path="/businesses" element={<Businesses />} />
         <Route index element={<Navigate to="/businesses" replace />} /> {/* Default redirection to /home */}
       </Route>

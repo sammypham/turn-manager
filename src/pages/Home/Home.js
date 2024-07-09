@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
@@ -14,11 +14,13 @@ import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 import { io } from "socket.io-client";
 
 const Home = () => {
+    const { business_id } = useParams();
+
     const navigate = useNavigate()
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
-    const { currentBusiness } = useContext(BusinessesContext);
+    const { currentBusiness, useFetchBusinessById } = useContext(BusinessesContext);
     const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
     const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
@@ -28,28 +30,27 @@ const Home = () => {
     const [socketConnected, setSocketConnected] = useState(false);
 
     const attemptJoinRoom = () => {
-        if (currentBusiness) {
-            if (!socketConnected) {
-                const socket = io.connect("http://localhost:4000")
-                socket.emit("join_room", currentBusiness._id);
+        if (!socketConnected) {
+            const socket = io.connect("http://localhost:4000")
+            socket.emit("join_room", business_id);
 
-                socket.on("receive_home_refresh", (data) => {
-                    console.log("RECEIVE_HOME_REFRESH");
+            socket.on("receive_home_refresh", (data) => {
+                console.log("RECEIVE_HOME_REFRESH");
+                console.log(currentBusiness);
 
-                    getSignIns();
-                })
+                getSignIns();
+            })
 
-                socketRef.current = socket;
+            socketRef.current = socket;
 
-                setSocketConnected(true);
-            }
+            setSocketConnected(true);
         }
     }
-    
+
     useEffect(() => {
         return () => {
             if (socketRef.current) {
-                console.log("DISCONNECT", currentBusiness._id);
+                console.log("DISCONNECT", business_id);
                 socketRef.current.disconnect();
                 socketRef.current = null;
             }
@@ -58,7 +59,7 @@ const Home = () => {
 
     const getSignIns = async () => {
         try {
-            const response = await fetch(`/api/sign_in?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/sign_in?business_id=${business_id}`, {
                 method: "GET"
             })
 
@@ -115,10 +116,10 @@ const Home = () => {
             getSignIns();
 
             if (socketRef.current) {
-                socketRef.current.emit("refresh_home", { room: currentBusiness._id });
+                socketRef.current.emit("refresh_home", { room: business_id });
             }
         }
-    }, [currentBusiness, signInModalOpen, servicesModalOpen]);
+    }, [signInModalOpen, servicesModalOpen]);
 
 
     useEffect(() => {
@@ -129,12 +130,12 @@ const Home = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");
         if (confirm) {
             try {
-                const response = await fetch(`/api/sign_in/clear?business_id=${currentBusiness._id}`, {
+                const response = await fetch(`/api/sign_in/clear?business_id=${business_id}`, {
                     method: "POST"
                 })
                 const responseData = await response.json();
                 if (response.ok) {
-        
+
                     getSignIns();
                 }
             } catch (error) {
@@ -155,15 +156,15 @@ const Home = () => {
 
         openServicesModal();
     }
-   
-    if (currentBusiness) {
+
+    if (business_id) {
         return (
             <>
                 <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
                 <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
                 <div className="home__turn-tracker-container">
                     <div className="home__business-name">
-                        {currentBusiness.name}
+                        {currentBusiness ? currentBusiness.name : "Business Name"}
                     </div>
                     <div className="home__turn-tracker-header">
                         <button

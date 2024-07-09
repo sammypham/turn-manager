@@ -6,11 +6,12 @@ import AddTechnicianModal from './AddTechnicianModal';
 import { useAddTechnicianModal } from '../../context/AddTechnicianProvider';
 import useFetchTech from "../../utils/useFetchTech.js"
 import { BusinessesContext } from '../../context/BusinessesProvider.js';
+import { useParams } from 'react-router-dom';
 
 const SignInModal = ({ isOpen, onClose }) => {
-    const { addTechnicianModalOpen, newTechnicianFormData, openAddTechnicianModal, closeAddTechnicianModal, changes } = useAddTechnicianModal();
+    const { business_id } = useParams();
 
-    const { currentBusiness } = useContext(BusinessesContext);
+    const { addTechnicianModalOpen, newTechnicianFormData, openAddTechnicianModal, closeAddTechnicianModal, changes } = useAddTechnicianModal();
 
     const { technicians, refreshTechnician } = useFetchTech();
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
@@ -36,7 +37,7 @@ const SignInModal = ({ isOpen, onClose }) => {
 
             if (confirm) {
                 try {
-                    const response = await fetch(`/api/tech?business_id=${currentBusiness._id}&technician_id=${technician._id}`, {
+                    const response = await fetch(`/api/tech?business_id=${business_id}&technician_id=${technician._id}`, {
                         method: "DELETE",
                         headers: {
                             'Content-Type': 'application/json'
@@ -84,7 +85,7 @@ const SignInModal = ({ isOpen, onClose }) => {
     const addTech = async (event) => {
 
         try {
-            const response = await fetch(`/api/tech?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/tech?business_id=${business_id}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

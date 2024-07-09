@@ -8,12 +8,14 @@ import { useContext, useState } from "react";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 import { Height } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 const ServicesModal = ({ isOpen, onClose }) => {
+    const { business_id } = useParams();
+
     const { addServicesModalOpen, openAddServicesModal, closeAddServicesModal, newServiceFormData, changes } = useAddServicesModal();
 
     const { services, refreshService } = useFetchService();
-    const { currentBusiness } = useContext(BusinessesContext);
     const { currentTurn, currentTechnician } = useContext(TurnManagerContext);
 
     const [isSelectingEdit, setIsSelectingEdit] = useState(false);
@@ -31,7 +33,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
 
     const deleteService = async (service) => {
         try {
-            const response = await fetch(`/api/service?business_id=${currentBusiness._id}&service_id=${service._id}`, {
+            const response = await fetch(`/api/service?business_id=${business_id}&service_id=${service._id}`, {
                 method: "DELETE"
             })
 
@@ -94,7 +96,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
     const deleteTurn = async () => {
         if (currentTurn._id) {
             try {
-                const response = await fetch(`/api/service_record/delete?business_id=${currentBusiness._id}&turn_id=${currentTurn._id}`, {
+                const response = await fetch(`/api/service_record/delete?business_id=${business_id}&turn_id=${currentTurn._id}`, {
                     method: "DELETE"
                 })
 
@@ -125,7 +127,7 @@ const ServicesModal = ({ isOpen, onClose }) => {
 
     const addService = async (event) => {
         try {
-            const response = await fetch(`/api/service?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/service?business_id=${business_id}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

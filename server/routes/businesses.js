@@ -14,6 +14,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/single/:business_id', async (req, res) => {
+    try {
+        const { business_id } = req.params;
+
+        const business = await Business.findById(business_id);
+
+        res.status(201).json({ business });
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 router.get('/currentBusiness', async (req, res) => {
     try {
         res.status(201).json({ currentBusiness: req.session.currentBusiness });

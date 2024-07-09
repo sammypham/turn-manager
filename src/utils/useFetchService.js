@@ -1,14 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import { BusinessesContext } from '../context/BusinessesProvider';
+import { useParams } from 'react-router-dom';
 
 const useFetchService = () => {
-    const { currentBusiness } = useContext(BusinessesContext);
+    const { business_id } = useParams();
 
     const [services, setServices] = useState([]); // Initialize data as an empty array
 
     const refreshService = async () => {
         try {
-            const response = await fetch(`/api/service?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/service?business_id=${business_id}`, {
                 method: "GET"
             });
 
@@ -25,8 +26,8 @@ const useFetchService = () => {
     };
 
     useEffect(() => {
-        refreshService(); // Call fetchData inside useEffect
-    }, [currentBusiness]); // Empty dependency array to run effect only once on mount
+        refreshService();
+    }, [business_id]);
 
     return { services, refreshService };
 };
