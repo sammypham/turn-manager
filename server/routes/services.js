@@ -18,7 +18,7 @@ router.get('/', validateBusinessOwnership, async (req, res) => {
     }
 })
 
-router.post('/', validateBusinessOwnership,async (req, res) => {
+router.post('/', validateBusinessOwnership, async (req, res) => {
     try {
 
         if (req.body.isEditing) {
@@ -43,10 +43,8 @@ router.post('/', validateBusinessOwnership,async (req, res) => {
     }
 })
 
-router.delete('/', validateBusinessOwnership,async (req, res) => {
+router.delete('/', validateBusinessOwnership, async (req, res) => {
     try {
-
-
         const deletedService = await Service.deleteOne({ _id: req.query.service_id });
 
         res.status(201).json();

@@ -5,8 +5,6 @@ const { ObjectId } = require('mongodb');
 const validateBusinessOwnership = require('../util/validateBusinessOwnership');
 const router = express.Router();
 
-
-
 router.get('/', validateBusinessOwnership, async (req, res) => {
     try {
         const technicians = await Technician.find({ business: new ObjectId(req.query.business_id) });

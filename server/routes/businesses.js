@@ -8,8 +8,7 @@ router.get('/', async (req, res) => {
     try {
         console.log(req.session.user_id)
         const businesses = await Business.find({ owner: req.session.user_id });
-        console.log('ahh')
-        console.log(businesses)
+
         res.status(201).json({ businesses: businesses });
     } catch (error) {
         console.error(error);

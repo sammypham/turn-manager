@@ -12,6 +12,35 @@ router.get("/", async (req, res) => {
             return res.status(400).json({ message: "Business ID is required" });
         }
         const businessId = req.session.currentBusiness._id;
+
+        // Find sign-ins with non-existent technician references
+        const invalidSignIns = await Sign_In.aggregate([
+            {
+                $lookup: {
+                    from: 'technicians', // The collection name of technicians
+                    localField: 'technician',
+                    foreignField: '_id',
+                    as: 'technicianDetails'
+                }
+            },
+            {
+                $match: {
+                    'technicianDetails': { $size: 0 }
+                }
+            },
+            {
+                $project: {
+                    _id: 1
+                }
+            }
+        ]);
+
+        // Extract IDs of sign-ins with invalid technician references
+        const invalidSignInIds = invalidSignIns.map(signIn => signIn._id);
+
+        // Delete the invalid sign-ins
+        await Sign_In.deleteMany({ _id: { $in: invalidSignInIds } });
+
         // Fetch the sign-ins and populate the relevant fields
         const signIns = await Sign_In.find({ business: new ObjectId(businessId) })
             .populate('business')
@@ -21,7 +50,7 @@ router.get("/", async (req, res) => {
         const technicianIds = signIns.map(signIn => signIn.technician._id);
 
         // Fetch the service records for these technicians
-        const serviceRecords = await Service_Record.find({ technician: { $in: technicianIds } })
+        var serviceRecords = await Service_Record.find({ technician: { $in: technicianIds } })
             .populate('technician')
             .populate('service');
 
