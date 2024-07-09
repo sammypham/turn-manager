@@ -34,6 +34,7 @@ const Home = () => {
 
             socket.on("receive_home_refresh", (data) => {
                 console.log("RECEIVE_HOME_REFRESH");
+
                 getSignIns();
             })
 
@@ -43,6 +44,14 @@ const Home = () => {
         }
     }
 
+    //here
+    useEffect(() => {
+        if (currentBusiness._id) {
+            getSignIns();
+            attemptJoinRoom();
+        }
+    }, [currentBusiness, socketRef.current]);
+    
     useEffect(() => {
         return () => {
             if (socketRef.current) {
@@ -100,6 +109,7 @@ const Home = () => {
         setNextTechnician(newSortedTechnicians.length > 0 ? newSortedTechnicians[0].technician : null);
     }
 
+    //here
     useEffect(() => {
         if (!socketConnected) {
             attemptJoinRoom();
@@ -130,6 +140,7 @@ const Home = () => {
                 })
                 const responseData = await response.json();
                 if (response.ok) {
+        
                     getSignIns();
                 }
             } catch (error) {

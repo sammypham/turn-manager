@@ -7,8 +7,6 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-        console.log("GET SIGN IN");
-
         const business = req.session.currentBusiness;
         if (!business) {
             return res.status(400).json({ message: "Business ID is required" });

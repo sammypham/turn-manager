@@ -22,7 +22,6 @@ const loggedIn = (user) => {
                 <a href="/logout" class="link">Logout</a>
             </button>
         )
-
     }
     else {
         return (

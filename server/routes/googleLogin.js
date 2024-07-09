@@ -85,7 +85,6 @@ router.get('/logout', (req, res) => {
 );
 
 router.get('/logoutCallback', (req, res) => {
-    console.log(req.session.user_id);
     req.session.currentBusiness = undefined;
     req.logout((err) => {
         if (err) {
