@@ -57,9 +57,10 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
         req.session.loggedIn = true;
 
         // Search for the user in the database
-        const user = await User.findOne({ googleId: googleId });
-
+        var user = await User.findOne({ googleId: googleId });
+        console.log(user)
         if (!user) {
+            console.log("here")
             // If the user does not exist, create a new user
             user = new User({
                 email: email,

@@ -36,7 +36,6 @@ const Home = () => {
 
             socket.on("receive_home_refresh", (data) => {
                 console.log("RECEIVE_HOME_REFRESH");
-                console.log(currentBusiness);
 
                 getSignIns();
             })
@@ -157,6 +156,7 @@ const Home = () => {
 
         openServicesModal();
     }
+
 
     if (business_id) {
         return (
