@@ -28,19 +28,21 @@ const Home = () => {
     const [socketConnected, setSocketConnected] = useState(false);
 
     const attemptJoinRoom = () => {
-        if (!socketConnected) {
-            const socket = io.connect("http://localhost:4000")
-            socket.emit("join_room", currentBusiness._id);
+        if (currentBusiness) {
+            if (!socketConnected) {
+                const socket = io.connect("http://localhost:4000")
+                socket.emit("join_room", currentBusiness._id);
 
-            socket.on("receive_home_refresh", (data) => {
-                console.log("RECEIVE_HOME_REFRESH");
+                socket.on("receive_home_refresh", (data) => {
+                    console.log("RECEIVE_HOME_REFRESH");
 
-                getSignIns();
-            })
+                    getSignIns();
+                })
 
-            socketRef.current = socket;
+                socketRef.current = socket;
 
-            setSocketConnected(true);
+                setSocketConnected(true);
+            }
         }
     }
     
@@ -153,7 +155,7 @@ const Home = () => {
 
         openServicesModal();
     }
-
+   
     if (currentBusiness) {
         return (
             <>

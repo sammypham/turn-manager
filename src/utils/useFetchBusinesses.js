@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useFetchBusinesses = () => {
     const [businesses, setBusinesses] = useState([]);
-    const [currentBusiness, setCurrentBusiness] = useState([]);
+    const [currentBusiness, setCurrentBusiness] = useState(undefined);
 
     const refreshBusinesses = async () => {
         try {
