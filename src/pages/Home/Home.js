@@ -43,19 +43,12 @@ const Home = () => {
         }
     }
 
-    
-    useEffect(() => {
-        if (currentBusiness._id) {
-            getSignIns();
-            attemptJoinRoom();
-        }
-    }, [currentBusiness, socketRef.current]);
-    
     useEffect(() => {
         return () => {
             if (socketRef.current) {
                 console.log("DISCONNECT", currentBusiness._id);
                 socketRef.current.disconnect();
+                socketRef.current = null;
             }
         }
     }, []);
@@ -108,6 +101,10 @@ const Home = () => {
     }
 
     useEffect(() => {
+        if (!socketConnected) {
+            attemptJoinRoom();
+        }
+
         if (!signInModalOpen && !servicesModalOpen) {
             setCurrentTechnician({});
             setCurrentTurn({});
@@ -117,7 +114,7 @@ const Home = () => {
                 socketRef.current.emit("refresh_home", { room: currentBusiness._id });
             }
         }
-    }, [signInModalOpen, servicesModalOpen]);
+    }, [currentBusiness, signInModalOpen, servicesModalOpen]);
 
 
     useEffect(() => {

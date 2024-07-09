@@ -16,21 +16,19 @@ const logoutFunction = async () => {
 }
 
 const loggedIn = (user) => {
-    console.log(user.user)
     if (user.user) {
-        return(
+        return (
             <button style={{ marginLeft: "auto" }} className="login-button">
                 <a href="/logout" class="link">Logout</a>
-         
             </button>
         )
 
     }
     else {
-        return (  
+        return (
             <NavLink to={"/login"} className="login-button" >
-                  Login
-              </NavLink>)
+                Login
+            </NavLink>)
     }
 }
 
@@ -52,7 +50,7 @@ const Header = () => {
                     {dayjs().format("ddd, MMMM D YYYY, hh:mm A")}
                 </div>
                 {loggedIn(user)}
-                
+
             </div >
             <Outlet />
         </>
