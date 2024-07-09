@@ -2,6 +2,8 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import useFetchUser from "../../utils/useFetchUser.js"
 import "./Header.css"
 
+import { useEffect, useState } from 'react';
+
 const dayjs = require('dayjs')
 
 
@@ -35,6 +37,16 @@ const Header = () => {
     const location = useLocation();
     const user = useFetchUser();
 
+    const [currentTime, setCurrentTime] = useState(dayjs());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentTime(dayjs());
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <>
             <div className='site-header'>
@@ -46,7 +58,7 @@ const Header = () => {
                     </NavLink>
                 }
                 <div style={{ height: "100%", alignContent: "center", padding: 10 }}>
-                    {dayjs().format("ddd, MMMM D YYYY, hh:mm A")}
+                    {currentTime.format("ddd, MMMM D YYYY, hh:mm:ss A")}
                 </div>
                 {loggedIn(user)}
 
