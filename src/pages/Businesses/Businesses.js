@@ -30,7 +30,8 @@ const Businesses = () => {
             const responseData = await response.json();
 
             if (response.ok) {
-                navigate(`/home/${business._id}`);
+
+                navigate(`/home/${business._id}`);        
             }
         } catch (error) {
             console.error(error);

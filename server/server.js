@@ -25,6 +25,7 @@ const businessesRoute = require('./routes/businesses');
 const signInRoute = require('./routes/sign_in');
 const serviceRecordRoute = require('./routes/service_record');
 const userRoute = require('./routes/user');
+const editRoute = require('./routes/editBusiness');
 
 const { User } = require('./models/users');
 const { Business } = require('./models/business');
@@ -55,6 +56,7 @@ app.use('/api/business', businessesRoute);
 app.use('/api/sign_in', signInRoute);
 app.use('/api/service_record', serviceRecordRoute);
 app.use('/api/user', userRoute);
+app.use('/api/edit', editRoute);
 
 const io = new Server(server, {
     cors: {
