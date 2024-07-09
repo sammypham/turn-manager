@@ -13,6 +13,8 @@ import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
 import { io } from "socket.io-client";
 
+import SettingsIcon from '@mui/icons-material/Settings';
+
 const Home = () => {
     const { business_id } = useParams();
 
@@ -157,16 +159,21 @@ const Home = () => {
         openServicesModal();
     }
 
-
     if (business_id) {
         return (
             <>
                 <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
                 <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
                 <div className="home__turn-tracker-container">
-                    <div className="home__business-name">
-                        {currentBusiness ? currentBusiness.name : "Business Name"}
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <div className="home__business-name">
+                            {currentBusiness ? currentBusiness.name : "Business Name"}
+                        </div>
+                        <button className="home__business-edit-button">
+                            <SettingsIcon />
+                        </button>
                     </div>
+
                     <div className="home__turn-tracker-header">
                         <button
                             onClick={openSignInModal}

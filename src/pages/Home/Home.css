@@ -4,6 +4,17 @@
     padding: 10px;
 }
 
+.home__business-edit-button {
+    background-color: lightgray;
+    padding: 5px;
+    border-radius: var(--border-radius-small);
+    transition: filter 0.2s;
+}
+
+.home__business-edit-button:hover {
+    filter: brightness(0.8);
+}
+
 .home__turn-tracker-container {
     display: flex;
     flex-direction: column;
