@@ -162,7 +162,6 @@ const Home = () => {
 
     useEffect(() => {
         console.log("test")
-        refreshCurrentBusiness();
         console.log(currentBusiness)
     },[currentBusiness])
     if (business_id) {
