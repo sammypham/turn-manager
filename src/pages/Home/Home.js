@@ -43,14 +43,6 @@ const Home = () => {
             setSocketConnected(true);
         }
     }
-
-    //here
-    useEffect(() => {
-        if (currentBusiness._id) {
-            getSignIns();
-            attemptJoinRoom();
-        }
-    }, [currentBusiness, socketRef.current]);
     
     useEffect(() => {
         return () => {
