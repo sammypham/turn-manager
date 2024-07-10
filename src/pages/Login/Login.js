@@ -10,7 +10,7 @@ const Login = () => {
             <div className="login-header">
                 Sign In
             </div>
-            <GoogleIcon href="http://localhost:4000/auth/google" />
+            <GoogleIcon href={`${process.env.REACT_APP_APP_URL}:${process.env.REACT_APP_SERVER_PORT}/auth/google`} />
         </div>
     );
 };

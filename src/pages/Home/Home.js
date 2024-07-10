@@ -34,7 +34,7 @@ const Home = () => {
 
     const attemptJoinRoom = () => {
         if (!socketConnected) {
-            const socket = io.connect("http://localhost:4000")
+            const socket = io.connect(`${process.env.REACT_APP_APP_URL}:${process.env.REACT_APP_SERVER_PORT}`)
             socket.emit("join_room", business_id);
 
             socket.on("receive_home_refresh", (data) => {
