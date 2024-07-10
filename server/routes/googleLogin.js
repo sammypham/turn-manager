@@ -24,7 +24,7 @@ function hash(input) {
 passport.use(new GoogleStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
-    callbackURL: `http://localhost:${port}/auth/google/callback`,
+    callbackURL: `https://turn-tracker-kdqk.onrender.com/auth/google/callback`,
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile', 'email']
 }, (token, tokenSecret, profile, done) => {
