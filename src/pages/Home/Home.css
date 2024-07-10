@@ -5,7 +5,9 @@
 }
 
 .home__business-edit-button {
-    background-color: lightgray;
+    display: inline-flex;
+    color: var(--white);
+    background-color: gray;
     padding: 5px;
     border-radius: var(--border-radius-small);
     transition: filter 0.2s;

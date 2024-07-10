@@ -108,7 +108,6 @@ const Home = () => {
         setNextTechnician(newSortedTechnicians.length > 0 ? newSortedTechnicians[0].technician : null);
     }
 
-    //here
     useEffect(() => {
         if (!socketConnected) {
             attemptJoinRoom();
@@ -170,12 +169,10 @@ const Home = () => {
                         <div className="home__business-name">
                             {currentBusiness ? currentBusiness.name : "Business Name"}
                         </div>
-           
-                        <NavLink to={"/setting"} className="home__business-edit-button" >
+                        <NavLink to={`/settings/${business_id}`} className="home__business-edit-button" >
                             <SettingsIcon />
                         </NavLink>
                     </div>
-
                     <div className="home__turn-tracker-header">
                         <button
                             onClick={openSignInModal}

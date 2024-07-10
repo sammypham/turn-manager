@@ -14,8 +14,6 @@ const Businesses = () => {
     const [addBusinessModalOpen, setAddBusinessModalOpen] = useState(false);
 
     const clickBusiness = async (business) => {
-        //navigate('/home');
-        // setCurrentBusiness(business);
         try {
             const response = await fetch(`/api/business/currentBusiness`, {
                 method: "POST",
@@ -30,8 +28,7 @@ const Businesses = () => {
             const responseData = await response.json();
 
             if (response.ok) {
-
-                navigate(`/home/${business._id}`);        
+                navigate(`/home/${business._id}`);
             }
         } catch (error) {
             console.error(error);
