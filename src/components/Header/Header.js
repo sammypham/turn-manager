@@ -18,7 +18,6 @@ const logoutFunction = async () => {
 }
 
 const loggedIn = (user) => {
-    console.log(user)
     if (user.user) {
         return (
             <button style={{ marginLeft: "auto" }} className="login-button">

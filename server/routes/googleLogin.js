@@ -24,13 +24,11 @@ const callbackURL = process.env.NODE_ENV === 'production'
     ? `${process.env.APP_URL}/auth/google/callback`
     : `${process.env.APP_URL}:${process.env.SERVER_PORT}/auth/google/callback`;
 
-console.log(callbackURL);
-
 // Passport configuration
 passport.use(new GoogleStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
-    callbackURL: `${callbackURL}/auth/google/callback`,
+    callbackURL: callbackURL,
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile', 'email']
 }, (token, tokenSecret, profile, done) => {
@@ -54,7 +52,6 @@ router.use(passport.session());
 router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
-    console.log(1);
     try {
         const googleId = req.user.id;
         const email = req.user.emails[0].value;
@@ -67,7 +64,6 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
         var user = await User.findOne({ googleId: googleId });
         console.log(user)
         if (!user) {
-            console.log("here")
             // If the user does not exist, create a new user
             user = new User({
                 email: email,

@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 // cors
 app.use(cors({
-    origin: `${process.env.APP_URL}`,
+    origin: `${process.env.APP_URL}:${process.env.SERVER_PORT}`,
     credentials: true,
 }));
 
@@ -62,11 +62,13 @@ app.use('/api/service_record', serviceRecordRoute);
 app.use('/api/user', userRoute);
 app.use('/api/edit', editRoute);
 
-console.log(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
+const socketOrigin = process.env.NODE_ENV === "production"
+    ? `${process.env.APP_URL}`
+    : `${process.env.APP_URL}:${process.env.CLIENT_PORT}`
 
 const io = new Server(server, {
     cors: {
-        origin: `${process.env.APP_URL}:${process.env.CLIENT_PORT}`,
+        origin: socketOrigin,
         methods: ["GET", "POST"],
     },
 });
