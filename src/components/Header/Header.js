@@ -1,6 +1,8 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-
+import useFetchUser from "../../utils/useFetchUser.js"
 import "./Header.css"
+
+import { useEffect, useState } from 'react';
 
 const dayjs = require('dayjs')
 
@@ -15,8 +17,35 @@ const logoutFunction = async () => {
     }
 }
 
+const loggedIn = (user) => {
+    if (user.user) {
+        return (
+            <button style={{ marginLeft: "auto" }} className="login-button">
+                <a href="/logout" class="link">Logout</a>
+            </button>
+        )
+    }
+    else {
+        return (
+            <NavLink to={"/login"} className="login-button" >
+                Login
+            </NavLink>)
+    }
+}
+
 const Header = () => {
     const location = useLocation();
+    const user = useFetchUser();
+
+    const [currentTime, setCurrentTime] = useState(dayjs());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentTime(dayjs());
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <>
@@ -29,22 +58,14 @@ const Header = () => {
                     </NavLink>
                 }
                 <div style={{ height: "100%", alignContent: "center", padding: 10 }}>
-                    {dayjs().format("ddd, MMMM D YYYY, hh:mm A")}
+                    {currentTime.format("ddd, MMMM D YYYY, hh:mm:ss A")}
                 </div>
-                <NavLink to={"/login"} className="login-button" >
-                    Login
-                </NavLink>
-                <button style={{ marginLeft: 10 }} className="login-button">
-                
-  
-                <a href="/logout" class="link">Logout</a>
-             
-                </button>
-      
+                {loggedIn(user)}
+
             </div >
             <Outlet />
         </>
-    )
+    );
 }
 
 export default Header;

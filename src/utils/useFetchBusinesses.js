@@ -2,7 +2,25 @@ import { useState, useEffect } from 'react';
 
 const useFetchBusinesses = () => {
     const [businesses, setBusinesses] = useState([]);
-    const [currentBusiness, setCurrentBusiness] = useState([]);
+    const [currentBusiness, setCurrentBusiness] = useState(null);
+
+    const getBusinessById = async (business_id) => {
+        try {
+            const response = await fetch(`/api/business/single/${business_id}`, {
+                method: "GET",
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const responseData = await response.json();
+
+            setCurrentBusiness(responseData.business);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     const refreshBusinesses = async () => {
         try {
@@ -21,30 +39,12 @@ const useFetchBusinesses = () => {
             console.error("Error:", error);
         }
     };
-    const refreshCurrentBusinesses = async () => {
-    
-        try {
-            const response = await fetch("/api/business/currentBusiness", {
-                method: "GET",
-            });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const responseData = await response.json();
-
-            setCurrentBusiness(responseData.currentBusiness);
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
     useEffect(() => {
         refreshBusinesses();
-        refreshCurrentBusinesses()
     }, []);
 
-    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, refreshCurrentBusinesses };
+    return { businesses, currentBusiness, setBusinesses, setCurrentBusiness, refreshBusinesses, getBusinessById };
 };
 
 export default useFetchBusinesses;

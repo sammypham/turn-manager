@@ -1,0 +1,89 @@
+.business-settings__container {
+    display: flex;
+    flex-direction: column;
+    margin: 0px auto;
+    padding: 20px;
+    box-shadow: var(--border-box-shadow);
+    max-width: 800px;
+    height: 100%;
+}
+
+.business-settings__container .back-button {
+    display: inline-flex;
+    color: gray;
+    margin-bottom: 10px;
+    padding: 5px;
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    background-color: var(--white);
+    transition: filter 0.2s;
+}
+
+.business-settings__container .back-button:hover {
+    filter: brightness(0.8);
+}
+
+.business-settings__container .business-settings__business-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 32px;
+    font-weight: bolder;
+}
+
+.business-settings__container .settings-inner-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 1rem 1rem 1rem;
+}
+
+.business-settings__header {
+    font-size: 24px;
+    font-weight: bolder;
+    padding: 10px 0px;
+    margin-bottom: 10px;
+    border-bottom: 2px lightgray solid;
+}
+
+.business-settings__basic-input-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 0px;
+    margin-left: 1rem;
+}
+
+.business-settings__basic-input-container .settings-name {
+    font-size: larger;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.business-settings__basic-input-container input {
+    padding: 10px;
+    border: 1px lightgray solid;
+    border-radius: var(--border-radius-small);
+    min-width: 150px;
+    width: 35%;
+}
+
+.business-settings__basic-input-container button {
+    background-color: var(--primary-color);
+    padding: 10px;
+    margin-left: 20px;
+    border-radius: var(--border-radius-small);
+    color: var(--white);
+}
+
+.business-settings__container .delete-button {
+    display: flex;
+    background-color: var(--red);
+    border-radius: var(--border-radius-small);
+    padding: 4px;
+    margin-left: 10px;
+    color: var(--white);
+    transition: filter 0.2s;
+}
+
+.business-settings__container .delete-button:hover {
+    filter: brightness(0.8);
+}

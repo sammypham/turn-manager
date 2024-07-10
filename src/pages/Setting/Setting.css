@@ -1,0 +1,39 @@
+.setting-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px;
+    box-shadow: var(--border-box-shadow);
+    border-radius: var(--border-radius-small);
+    min-height: 550px;
+    min-width: 600px;
+}
+
+.edit-container {
+    display: flex;
+    flex-direction: column;
+
+}
+.edit-button {
+    background-color: gray;
+    margin-top: 20px;
+    border-radius: var(--border-radius-small);
+
+    width: 170px;
+    height: 80px;   
+}
+
+.setting-edit-button {
+    background-color: gray;
+
+}
+
+.setting-delete-button {
+    margin-top: 40px;
+    background-color: red;
+
+}

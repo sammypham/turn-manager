@@ -5,7 +5,6 @@ const validateLogin = async (req, res, next) => {
     if (req.session.user_id) {
         next();
     } else {
-        console.log("here")
         //res.render('../src/pages/Login/Login');
     }
     

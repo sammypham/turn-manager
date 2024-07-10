@@ -1,14 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import { BusinessesContext } from '../context/BusinessesProvider';
+import { useParams } from 'react-router-dom';
 
 const useFetchTech = () => {
-    const { currentBusiness } = useContext(BusinessesContext);
+    const { business_id } = useParams();
 
     const [technicians, setTechnicians] = useState([]);
 
     const refreshTechnician = async () => {
         try {
-            const response = await fetch(`/api/tech?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/tech?business_id=${business_id}`, {
                 method: "GET"
             });
 
@@ -26,7 +27,7 @@ const useFetchTech = () => {
 
     useEffect(() => {
         refreshTechnician();
-    }, [currentBusiness]);
+    }, [business_id]);
 
     return { technicians, refreshTechnician };
 };

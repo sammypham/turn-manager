@@ -8,8 +8,7 @@ const signInSchema = new mongoose.Schema({
     },
     technician: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Technician",
-        required: true
+        ref: "Technician"
     },
     time: {
         type: Date,

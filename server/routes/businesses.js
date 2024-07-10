@@ -6,9 +6,20 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
-        const businesses = await Business.find({ owner: new ObjectId(req.session.user_id) });
-
+        const businesses = await Business.find({ owner: req.session.user_id });
         res.status(201).json({ businesses: businesses });
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+router.get('/single/:business_id', async (req, res) => {
+    try {
+        const { business_id } = req.params;
+
+        const business = await Business.findById(business_id);
+
+        res.status(201).json({ business: business });
     } catch (error) {
         console.error(error);
     }

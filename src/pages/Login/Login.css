@@ -8,8 +8,8 @@
     padding: 20px;
     box-shadow: var(--border-box-shadow);
     border-radius: var(--border-radius-small);
-    min-height: 350px;
-    min-width: 300px;
+    width: 100%;
+    max-width: 350px;
 }
 
 .login-container .login-title {

@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
+import { NavLink } from 'react-router-dom';
 import "./Home.css"
 
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SignInModal from "../../components/Modals/SignInModal.js";
 import ServicesModal from "../../components/Modals/ServicesModal.js";
 import { useServicesModal } from "../../context/ServicesModalProvider.js";
@@ -11,20 +12,58 @@ import dayjs from "dayjs";
 import { BusinessesContext } from "../../context/BusinessesProvider.js";
 import { TurnManagerContext } from "../../context/TurnManagerProvider.js";
 
+import { io } from "socket.io-client";
+
+import SettingsIcon from '@mui/icons-material/Settings';
+
 const Home = () => {
+    const { business_id } = useParams();
+
     const navigate = useNavigate()
     const [nextTechnician, setNextTechnician] = useState(null);
     const { signInModalOpen, openSignInModal, closeSignInModal } = useSignInModal();
     const { servicesModalOpen, openServicesModal, closeServicesModal } = useServicesModal();
-    const { currentBusiness } = useContext(BusinessesContext);
-    const { currentTechnician, setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
+    const { currentBusiness, getBusinessById } = useContext(BusinessesContext);
+    const { setCurrentTechnician, setCurrentTurn } = useContext(TurnManagerContext);
     const [sortedTechnicians, setSortedTechnicians] = useState([]);
 
     const [signIns, setSignIns] = useState([]);
 
+    const socketRef = useRef(null);
+    const [socketConnected, setSocketConnected] = useState(false);
+
+    const attemptJoinRoom = () => {
+        if (!socketConnected) {
+            const socket = io.connect("http://localhost:4000")
+            socket.emit("join_room", business_id);
+
+            socket.on("receive_home_refresh", (data) => {
+                console.log("RECEIVE_HOME_REFRESH");
+
+                getSignIns();
+            })
+
+            socketRef.current = socket;
+
+            setSocketConnected(true);
+        }
+    }
+
+    useEffect(() => {
+        getBusinessById(business_id);
+
+        return () => {
+            if (socketRef.current) {
+                console.log("DISCONNECT", business_id);
+                socketRef.current.disconnect();
+                socketRef.current = null;
+            }
+        }
+    }, []);
+
     const getSignIns = async () => {
         try {
-            const response = await fetch(`/api/sign_in?business_id=${currentBusiness._id}`, {
+            const response = await fetch(`/api/sign_in?business_id=${business_id}`, {
                 method: "GET"
             })
 
@@ -70,17 +109,21 @@ const Home = () => {
     }
 
     useEffect(() => {
+        if (!socketConnected) {
+            attemptJoinRoom();
+        }
+
         if (!signInModalOpen && !servicesModalOpen) {
             setCurrentTechnician({});
             setCurrentTurn({});
             getSignIns();
-        }
 
+            if (socketRef.current) {
+                socketRef.current.emit("refresh_home", { room: business_id });
+            }
+        }
     }, [signInModalOpen, servicesModalOpen]);
 
-    useEffect(() => {
-        getSignIns();
-    }, []);
 
     useEffect(() => {
         findNextTechnician();
@@ -90,12 +133,10 @@ const Home = () => {
         const confirm = window.confirm("Are you sure you want to clear the turn tracker?");
         if (confirm) {
             try {
-                const response = await fetch(`/api/sign_in/clear?business_id=${currentBusiness._id}`, {
+                const response = await fetch(`/api/sign_in/clear?business_id=${business_id}`, {
                     method: "POST"
                 })
-
                 const responseData = await response.json();
-
                 if (response.ok) {
                     getSignIns();
                 }
@@ -117,20 +158,26 @@ const Home = () => {
 
         openServicesModal();
     }
-    if (currentBusiness) {
+
+    if (business_id) {
         return (
             <>
                 <SignInModal isOpen={signInModalOpen} onClose={closeSignInModal} />
                 <ServicesModal isOpen={servicesModalOpen} onClose={closeServicesModal} />
                 <div className="home__turn-tracker-container">
-                    <div className="home__business-name">
-                        {currentBusiness.name}
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <div className="home__business-name">
+                            {currentBusiness ? currentBusiness.name : "Business Name"}
+                        </div>
+                        <NavLink to={`/settings/${business_id}`} className="home__business-edit-button" >
+                            <SettingsIcon />
+                        </NavLink>
                     </div>
                     <div className="home__turn-tracker-header">
                         <button
                             onClick={openSignInModal}
                             className="header-button sign-in"
-                            title="Sign In">
+                            title="Technician Sign In">
                             Sign In
                         </button>
                         <div style={{ height: "100%", alignContent: "center" }}>
