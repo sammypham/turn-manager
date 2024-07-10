@@ -1,4 +1,6 @@
 import "./Login.css"
+import GoogleIcon from "../../components/GoogleIcon/GoogleIcon.js";
+
 
 const Login = () => {
     return (
@@ -9,9 +11,9 @@ const Login = () => {
             <div className="login-header">
                 Sign In
             </div>
-            <a href="http://localhost:4000/auth/google">
-                Sign In w/ Google
-            </a>
+            <GoogleIcon href="http://localhost:4000/auth/google">
+      
+                </GoogleIcon>
         </div>
     );
 };
