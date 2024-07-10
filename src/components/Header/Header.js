@@ -18,6 +18,7 @@ const logoutFunction = async () => {
 }
 
 const loggedIn = (user) => {
+    console.log("testt")
     console.log(user)
     if (user.user) {
         return (
