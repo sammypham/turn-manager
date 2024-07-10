@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 // cors
 app.use(cors({
-    origin: `${process.env.APP_URL}:${process.env.CLIENT_PORT}`,
+    origin: `${process.env.APP_URL}`,
     credentials: true,
 }));
 
@@ -61,6 +61,8 @@ app.use('/api/sign_in', signInRoute);
 app.use('/api/service_record', serviceRecordRoute);
 app.use('/api/user', userRoute);
 app.use('/api/edit', editRoute);
+
+console.log(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
 
 const io = new Server(server, {
     cors: {

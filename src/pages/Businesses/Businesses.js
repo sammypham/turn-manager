@@ -53,6 +53,23 @@ const Businesses = () => {
         )
     }
 
+    const testClick = async () => {
+        try {
+            const response = await fetch('/auth/google', {
+                method: "GET"
+            })
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                console.log(responseData);
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <>
             <AddBusinessModal isOpen={addBusinessModalOpen} onClose={closeAddBusinessModal} />
@@ -60,6 +77,9 @@ const Businesses = () => {
                 <h1>
                     My Businesses
                 </h1>
+                <button onClick={testClick}>
+                    HELP ME
+                </button>
                 <div className="content-container">
                     {
                         businesses.map((business, index) =>

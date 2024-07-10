@@ -20,11 +20,17 @@ function hash(input) {
     return hash.digest('hex');
 }
 
+const callbackURL = process.env.NODE_ENV === 'production'
+    ? `${process.env.APP_URL}/auth/google/callback`
+    : `${process.env.APP_URL}:${process.env.SERVER_PORT}/auth/google/callback`;
+
+console.log(callbackURL);
+
 // Passport configuration
 passport.use(new GoogleStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
-    callbackURL: `https://localhost:3000/auth/google/callback`,
+    callbackURL: `${callbackURL}/auth/google/callback`,
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     scope: ['profile', 'email']
 }, (token, tokenSecret, profile, done) => {
@@ -48,6 +54,7 @@ router.use(passport.session());
 router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
+    console.log(1);
     try {
         const googleId = req.user.id;
         const email = req.user.emails[0].value;
