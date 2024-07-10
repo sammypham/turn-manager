@@ -58,7 +58,7 @@ const Businesses = () => {
             <AddBusinessModal isOpen={addBusinessModalOpen} onClose={closeAddBusinessModal} />
             <div className="businesses-page-container">
                 <h1>
-                    My Businesses
+                    My Businesses Hi
                 </h1>
                 <div className="content-container">
                     {
