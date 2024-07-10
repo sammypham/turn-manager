@@ -4,7 +4,6 @@
     margin: 0px auto;
     padding: 20px;
     box-shadow: var(--border-box-shadow);
-    border-radius: var(--border-radius-small);
     max-width: 800px;
     height: 100%;
 }
