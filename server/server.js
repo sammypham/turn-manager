@@ -1,4 +1,8 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+// Load environment variables based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
 
 const mongoose = require('mongoose');
 const express = require('express');
@@ -7,14 +11,14 @@ const cors = require('cors');
 const app = express();
 const http = require('http');
 const { Server } = require("socket.io");
-const port = 4000;
+const port = process.env.SERVER_PORT;
 
 const server = http.createServer(app);
 
 // cors
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true,  // enable credentials (cookies, authorization headers)
+    origin: `${process.env.APP_URL}:${process.env.CLIENT_PORT}`,
+    credentials: true,
 }));
 
 // Routes
@@ -60,7 +64,7 @@ app.use('/api/edit', editRoute);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: `${process.env.APP_URL}:${process.env.CLIENT_PORT}`,
         methods: ["GET", "POST"],
     },
 });
