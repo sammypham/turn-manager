@@ -10,20 +10,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const Setting = () => {
     const { business_id } = useParams();
 
-    const { currentBusiness, refreshBusinesses, setCurrentBusiness } = useContext(BusinessesContext);
+    const { currentBusiness, refreshBusinesses, getBusinessById } = useContext(BusinessesContext);
     const navigate = useNavigate();
 
-    const [businessName, setBusinessName] = useState({
-        name: "",
-    });
+    const [businessName, setBusinessName] = useState("");
 
     const onNameChange = (event) => {
-        setBusinessName(
-            {
-                ...businessName,
-                name: event.target.value
-            }
-        )
+        setBusinessName(event.target.value)
     }
 
     const editBusiness = async (event) => {
@@ -33,14 +26,17 @@ const Setting = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(businessName)
+                body: JSON.stringify({
+                    name: businessName
+                })
             })
 
             const responseData = await response.json();
 
             if (response.ok) {
                 refreshBusinesses();
-                navigate(`/home/${responseData.businessId}`)
+                getBusinessById(business_id);
+                setBusinessName("");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -109,7 +105,7 @@ const Setting = () => {
                                 className='input-box'
                                 type="text"
                                 name=""
-                                value={businessName.name}
+                                value={businessName}
                                 onChange={onNameChange}
                                 placeholder="Change Business Name"
                             />
