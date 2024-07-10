@@ -11,8 +11,7 @@ const technicianSchema = new mongoose.Schema({
         required: true
     },
     pin: {
-        type: String,
-        required: true
+        type: String
     }
 })
 

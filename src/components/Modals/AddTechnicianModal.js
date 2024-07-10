@@ -20,7 +20,7 @@ const AddTechnicianModal = ({ isOpen, onClose, formData, changes, addTech }) => 
                         value={formData.name}
                         onChange={changes.changeTechnicianName}
                     />
-                    Technician Pin:
+                    {/* Technician Pin:
                     <input
                         type="password"
                         className="modal-form-input"
@@ -35,7 +35,7 @@ const AddTechnicianModal = ({ isOpen, onClose, formData, changes, addTech }) => 
                         placeholder="Confirm Pin (required)"
                         value={formData.confirmPin}
                         onChange={changes.changeConfirmPin}
-                    />
+                    /> */}
                 </div>
                 <button onClick={addTech} className="modal-button add-service-button" style={{ margin: "20px 0px", marginLeft: "auto" }}>
                     Add Technician

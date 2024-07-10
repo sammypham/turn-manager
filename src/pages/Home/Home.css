@@ -203,7 +203,6 @@
     padding: 20px;
     max-width: clamp(60%, 80vw, 800px);
     max-height: clamp(60%, 80vh, 800px);
-    min-height: 300px;
 }
 
 .modal-container.technicians-modal-container {
