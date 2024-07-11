@@ -1,4 +1,8 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useContext}from "react";
+import useFetchUser from "../../utils/useFetchUser.js"
+import { BusinessesContext } from '../../context/BusinessesProvider.js';
+
 import "./Header.css"
 
 import { useContext, useEffect, useState } from 'react';
@@ -7,21 +11,13 @@ import { UserContext } from '../../context/UserProvider';
 const dayjs = require('dayjs')
 
 
-const logoutFunction = async () => {
-    try {
-        const response = await fetch('/auth/google/logout', {
-            method: "GET"
-        })
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useContext(UserContext);
 
+    
+    const { refreshBusinesses } = useContext(BusinessesContext);
     const [currentTime, setCurrentTime] = useState(dayjs());
 
     const logout = async () => {
@@ -41,8 +37,8 @@ const Header = () => {
             console.error("Error:", error);
             // Handle error gracefully (e.g., show error message)
         }
+        refreshBusinesses();
     }
-
     const loggedIn = (user) => {
         if (user) {
             return (

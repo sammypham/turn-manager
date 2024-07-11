@@ -30,6 +30,7 @@ const signInRoute = require('./routes/sign_in');
 const serviceRecordRoute = require('./routes/service_record');
 const userRoute = require('./routes/user');
 const editRoute = require('./routes/editBusiness');
+const demoRoute = require('./routes/demo');
 
 const { User } = require('./models/users');
 const { Business } = require('./models/business');
@@ -49,6 +50,7 @@ app.use(
     })
 );
 
+
 app.set('views', __dirname);
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
@@ -61,6 +63,7 @@ app.use('/api/sign_in', signInRoute);
 app.use('/api/service_record', serviceRecordRoute);
 app.use('/api/user', userRoute);
 app.use('/api/edit', editRoute);
+app.use('/api/demo', demoRoute);
 
 const socketOrigin = process.env.NODE_ENV === "production"
     ? `${process.env.APP_URL}`

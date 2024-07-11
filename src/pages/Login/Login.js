@@ -22,6 +22,24 @@ const Login = () => {
         }
     }, [user])
 
+
+    const demoLogin = async() => {
+            try {
+                const response = await fetch(`http://localhost:4000/api/demo`, {
+                    method: "GET",
+                    credentials: "include", // Ensure cookies (session) are sent with the request
+                })
+
+                const responseData = await response;
+                console.log("test")
+                if (response.ok) {
+                    navigate(`/businesses`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+    }
+
     return (
         <div className="login-container">
             <div className="login-title">
@@ -31,7 +49,7 @@ const Login = () => {
                 Sign In
             </div>
             <GoogleIcon href={callbackURL} />
-            <button className="demo-account-button">
+            <button className="demo-account-button" onClick={demoLogin} >
                 USE DEMO ACCOUNT
             </button>
         </div>
