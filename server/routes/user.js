@@ -3,8 +3,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        
-        return res.status(200).json({ userList: req.session.user_id });
+        return res.status(200).json({ user_id: req.session.user_id });
     } catch (error) {
         console.error(error);
 

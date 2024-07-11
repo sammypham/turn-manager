@@ -7,6 +7,8 @@ import Login from './pages/Login/Login'
 import Logout from './pages/Logout/Logout'
 import Setting from './pages/Settings/Settings'
 import Businesses from './pages/Businesses/Businesses';
+import Index from './pages/Index/Index';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,11 +17,13 @@ const router = createBrowserRouter(
       <Route path="/logout" element={<Logout />} />
 
       <Route path="/" element={<Header />}>
-        <Route path="/home/:business_id" element={<Home />} />
-        <Route path="/businesses" element={<Businesses />} />
-        <Route path="/settings/:business_id" element={<Setting />} />
-        <Route index element={<Navigate to="/businesses" replace />} /> {/* Default redirection to /home */}
+        <Route path="/home/:business_id" element={<ProtectedRoute element={Home} />} />
+        <Route path="/businesses" element={<ProtectedRoute element={Businesses} />} />
+        <Route path="/settings/:business_id" element={<ProtectedRoute element={Setting} />} />
       </Route>
+
+      <Route path="/" index element={<Index />} />
+      <Route path="/*" index element={<Navigate to="/" replace />} />
     </Route>
   )
 )

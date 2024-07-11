@@ -1,43 +1,59 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import useFetchUser from "../../utils/useFetchUser.js"
+import { BusinessesContext } from '../../context/BusinessesProvider.js';
 import "./Header.css"
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/UserProvider';
 
 const dayjs = require('dayjs')
 
 
-const logoutFunction = async () => {
-    try {
-        const response = await fetch('/auth/google/logout', {
-            method: "GET"
-        })
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-const loggedIn = (user) => {
-    if (user.user) {
-        return (
-            <button style={{ marginLeft: "auto" }} className="login-button">
-                <a href="/logout" class="link">Logout</a>
-            </button>
-        )
-    }
-    else {
-        return (
-            <NavLink to={"/login"} className="login-button" >
-                Login
-            </NavLink>)
-    }
-}
-
 const Header = () => {
+    const navigate = useNavigate();
     const location = useLocation();
-    const user = useFetchUser();
+    const { user } = useContext(UserContext);
 
+    const { refreshBusinesses } = useContext(BusinessesContext);
+    const { refreshUser } = useContext(UserContext);
     const [currentTime, setCurrentTime] = useState(dayjs());
+
+    const logout = async () => {
+        try {
+            const response = await fetch(`/auth/google/logoutCallback`, {
+                method: "GET",
+                credentials: "same-origin", // Ensure cookies (session) are sent with the request
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            // Redirect to the homepage after successful logout
+            navigate("/");
+        } catch (error) {
+            console.error("Error:", error);
+            // Handle error gracefully (e.g., show error message)
+        }
+        refreshBusinesses();
+        refreshUser();
+    }
+    const loggedIn = (user) => {
+        if (user) {
+            return (
+                <button onClick={logout} style={{ marginLeft: "auto" }} className="login-button">
+                    Logout
+                    {/* <a href="/logout" class="link">Logout</a> */}
+                </button>
+            )
+        }
+        else {
+            return (
+                <NavLink to={"/login"} className="login-button" >
+                    Login
+                </NavLink>)
+        }
+    }
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -61,7 +77,6 @@ const Header = () => {
                     {currentTime.format("ddd, MMMM D YYYY, hh:mm:ss A")}
                 </div>
                 {loggedIn(user)}
-
             </div >
             <Outlet />
         </>

@@ -20,5 +20,19 @@
 .login-container .login-header {
     font-size: 24px;
     font-weight: bolder;
-    margin: 10px 0px;
+    margin: 20px 0px;
+}
+
+.login-container .demo-account-button {
+    border: 1px var(--red) solid;
+    color: var(--red);
+    margin-top: 20px;
+    height: 40px;
+    border-radius: 3rem;
+    transition: background-color 0.2s;
+}
+
+.login-container .demo-account-button:hover {
+    background-color: var(--red);
+    color: var(--white);
 }

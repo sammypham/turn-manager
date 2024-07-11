@@ -5,6 +5,13 @@ const cors = require('cors')
 const passport = require('passport')
 const crypto = require('crypto');
 const { User } = require('../models/users');
+const { Business} = require('../models/business');
+const { Technician} = require('../models/technician');
+const { Service} = require('../models/service');
+const { Sign_In} = require('../models/sign_in');
+const { Service_Record} = require('../models/service_record');
+
+
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const port = 4000
 
@@ -49,7 +56,9 @@ passport.deserializeUser((obj, done) => {
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+}));
 
 router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
     try {
@@ -62,7 +71,6 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
         // Search for the user in the database
         var user = await User.findOne({ googleId: googleId });
-        console.log(user)
         if (!user) {
             // If the user does not exist, create a new user
             user = new User({
@@ -75,7 +83,7 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
         req.session.user_id = user._id;
         // Redirect to the client application
-        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
+        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}/login`);
     } catch (error) {
         console.error('Error during authentication callback:', error);
         res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
@@ -85,19 +93,47 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
 router.get('/logout', (req, res) => {
     res.render('Logout')
-}
-);
+});
 
-router.get('/logoutCallback', (req, res) => {
+router.get('/logoutCallback', async(req, res) => {
+    console.log(req.session.googleId)
+    if (req.session.googleId === 1) {
+        try {
+            const sessionId = await User.find({googleId: 1})
+            const businessList = await Business.find({owner: sessionId})
+            console.log(businessList)
+            businessList.forEach(async(givenBusiness) => {
+                try {
+                    await Business.findByIdAndDelete(givenBusiness._id)
+                    await Service.deleteMany({business : givenBusiness._id})
+                    await Sign_In.deleteMany({business : givenBusiness._id})
+            
+                    const techList = await Technician.find({business : givenBusiness._id})
+                    techList.forEach(async(givenTech) => {
+                        await Service_Record.deleteMany({technician: givenTech._id})
+                    });
+                    await Technician.deleteMany({business : givenBusiness._id})
+                } catch(error) {
+                    console.error(error);  
+                }
+            });
+        } catch(error) {
+            console.error(error);
+        }
+    }
     req.session.currentBusiness = undefined;
+    req.session.user_id = undefined;
+    req.session.loggedIn = false;
     req.logout((err) => {
         if (err) {
             // Handle error, e.g., logging or sending an error response
             console.error('Error during logout:', err);
             return res.status(500).json({ error: 'Logout failed' });
         }
+        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
     });
-    res.status(200).json({});
+
+    //res.status(200).json({});
 }
 );
 
