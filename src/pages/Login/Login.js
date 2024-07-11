@@ -15,6 +15,9 @@ const Login = () => {
                 Sign In
             </div>
             <GoogleIcon href={callbackURL} />
+            <button className="demo-account-button">
+                USE DEMO ACCOUNT
+            </button>
         </div>
     );
 };

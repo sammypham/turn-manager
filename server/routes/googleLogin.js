@@ -75,7 +75,7 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
         req.session.user_id = user._id;
         // Redirect to the client application
-        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
+        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}/businesses`);
     } catch (error) {
         console.error('Error during authentication callback:', error);
         res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
@@ -85,8 +85,7 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
 router.get('/logout', (req, res) => {
     res.render('Logout')
-}
-);
+});
 
 router.get('/logoutCallback', (req, res) => {
     req.session.currentBusiness = undefined;
@@ -96,8 +95,11 @@ router.get('/logoutCallback', (req, res) => {
             console.error('Error during logout:', err);
             return res.status(500).json({ error: 'Logout failed' });
         }
+
+        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);
     });
-    res.status(200).json({});
+
+    // res.status(200).json({});
 }
 );
 

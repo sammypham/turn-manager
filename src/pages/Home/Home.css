@@ -90,19 +90,26 @@
 
 .home__turn-tracker-row .turn-box {
     position: relative;
-    display: flex;
     margin: 0px 5px;
     border-radius: var(--border-radius-small);
     box-shadow: var(--border-box-shadow);
     height: 100%;
-    min-width: 90px;
+    width: 90px;
+    padding: 10px;
     align-items: center;
     justify-content: center;
     font-size: 16px;
     font-weight: 1000;
     background-color: var(--service-color);
     color: var(--white);
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.turn-box .turn-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .turn-box.add-turn {
