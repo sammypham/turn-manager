@@ -1,7 +1,11 @@
 import "./GoogleIcon.css"
 
 const GoogleIcon = () => {
-  return (<a href={`${process.env.REACT_APP_APP_URL}:${process.env.REACT_APP_SERVER_PORT}/auth/google`} className="gsi-material-button" >
+  const callbackURL = process.env.NODE_ENV === 'development'
+    ? `${process.env.REACT_APP_APP_URL}:${process.env.REACT_APP_SERVER_PORT}/auth/google`
+    : `${process.env.REACT_APP_APP_URL}/auth/google`
+
+  return (<a href={callbackURL} className="gsi-material-button" >
     <div className="gsi-material-button-state"></div>
     <div className="gsi-material-button-content-wrapper">
       <div className="gsi-material-button-icon">
