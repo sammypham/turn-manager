@@ -49,7 +49,9 @@ passport.deserializeUser((obj, done) => {
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+}));
 
 router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
     try {
@@ -75,7 +77,7 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/' }
 
         req.session.user_id = user._id;
         // Redirect to the client application
-        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}/businesses`);
+        res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}/login`);
     } catch (error) {
         console.error('Error during authentication callback:', error);
         res.redirect(`${process.env.APP_URL}:${process.env.CLIENT_PORT}`);

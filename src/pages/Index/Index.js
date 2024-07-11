@@ -1,15 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Index.css'; // Importing the CSS file
 import { NavLink, useNavigate } from 'react-router-dom';
-import useFetchUser from '../../utils/useFetchUser';
+import { UserContext } from '../../context/UserProvider';
 
 const Index = () => {
     const navigate = useNavigate();
-    const user = useFetchUser();
-
-    if (user?.user) {
-        navigate("/businesses");
-    }
+    const { user } = useContext(UserContext);
 
     return (
         <>

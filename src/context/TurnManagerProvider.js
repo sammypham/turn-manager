@@ -1,7 +1,5 @@
 import React, { createContext, useState } from 'react';
 
-
-
 export const TurnManagerContext = createContext();
 
 export const TurnManagerProvider = ({ children }) => {

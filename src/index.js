@@ -10,23 +10,26 @@ import { SignInModalProvider } from './context/SignInModalProvider';
 import { AddTechnicianModalProvider } from './context/AddTechnicianProvider';
 import { BusinessesProvider } from './context/BusinessesProvider';
 import { TurnManagerProvider } from './context/TurnManagerProvider';
+import { UserProvider } from './context/UserProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <TurnManagerProvider>
-      <BusinessesProvider>
-        <SignInModalProvider>
-          <AddTechnicianModalProvider>
-            <ServicesModalProvider>
-              <AddServicesModalProvider>
-                <App />
-              </AddServicesModalProvider>
-            </ServicesModalProvider>
-          </AddTechnicianModalProvider>
-        </SignInModalProvider>
-      </BusinessesProvider>
-    </TurnManagerProvider>
+    <UserProvider>
+      <TurnManagerProvider>
+        <BusinessesProvider>
+          <SignInModalProvider>
+            <AddTechnicianModalProvider>
+              <ServicesModalProvider>
+                <AddServicesModalProvider>
+                  <App />
+                </AddServicesModalProvider>
+              </ServicesModalProvider>
+            </AddTechnicianModalProvider>
+          </SignInModalProvider>
+        </BusinessesProvider>
+      </TurnManagerProvider>
+    </UserProvider>
   </React.StrictMode>
 );
 

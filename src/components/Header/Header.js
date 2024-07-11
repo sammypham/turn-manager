@@ -1,8 +1,8 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import useFetchUser from "../../utils/useFetchUser.js"
 import "./Header.css"
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/UserProvider';
 
 const dayjs = require('dayjs')
 
@@ -20,7 +20,7 @@ const logoutFunction = async () => {
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const user = useFetchUser();
+    const { user } = useContext(UserContext);
 
     const [currentTime, setCurrentTime] = useState(dayjs());
 
@@ -44,7 +44,7 @@ const Header = () => {
     }
 
     const loggedIn = (user) => {
-        if (user.user) {
+        if (user) {
             return (
                 <button onClick={logout} style={{ marginLeft: "auto" }} className="login-button">
                     Logout
@@ -82,7 +82,6 @@ const Header = () => {
                     {currentTime.format("ddd, MMMM D YYYY, hh:mm:ss A")}
                 </div>
                 {loggedIn(user)}
-
             </div >
             <Outlet />
         </>

@@ -1,11 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
-
+import { useState, useEffect } from 'react';
 
 const useFetchUser = () => {
+    const [user, setUser] = useState(localStorage.getItem('user_id'));
+    const [userLoading, setUserLoading] = useState(false);
 
-    const [user, setUser] = useState([]);
     const refreshUser = async () => {
         try {
+            setUserLoading(true);
+
             const response = await fetch(`/api/user`, {
                 method: "GET"
             });
@@ -16,9 +18,13 @@ const useFetchUser = () => {
 
             const responseData = await response.json();
 
-            setUser(responseData.userList);
+            const userId = responseData.user_id;
+            setUser(userId);
+            localStorage.setItem('user_id', userId); // Store user_id in local storage
+            setUserLoading(false);
         } catch (error) {
             console.error("Error:", error);
+            setUserLoading(false);
         }
     };
 
@@ -26,7 +32,7 @@ const useFetchUser = () => {
         refreshUser();
     }, []);
 
-    return { user, refreshUser };
+    return { user, refreshUser, userLoading };
 };
 
 export default useFetchUser;
