@@ -95,26 +95,6 @@ router.get('/logout', (req, res) => {
     res.render('Logout')
 });
 
-/*
-    try {
-        await Business.findByIdAndDelete(req.session.currentBusiness._id)
-        await Service.deleteMany({business : req.session.currentBusiness._id})
-        await Sign_In.deleteMany({business : req.session.currentBusiness._id})
-
-        const techList = await Technician.find({business : req.session.currentBusiness._id})
-        console.log(techList)
-        techList.forEach(async(givenTech, index) => {
-            await Service_Record.deleteMany({technician: givenTech._id})
-        });
-        await Technician.deleteMany({business : req.session.currentBusiness._id})
-        req.session.currentBusiness = undefined;
-        res.status(201).json({})
-    } catch (error) {
-        console.error(error);
-
-        return res.status(500).json();    
-    }
-*/
 router.get('/logoutCallback', async(req, res) => {
     console.log(req.session.googleId)
     if (req.session.googleId === 1) {

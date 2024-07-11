@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate()
-    const { user, refreshUser } = useContext(UserContext);
+    const { user, refreshUser, setUser } = useContext(UserContext);
 
     const callbackURL = process.env.NODE_ENV === 'development'
         ? `${process.env.REACT_APP_APP_URL}:${process.env.REACT_APP_SERVER_PORT}/auth/google`
@@ -14,6 +14,9 @@ const Login = () => {
 
     useEffect(() => {
         refreshUser();
+        if (user) {
+            navigate("/businesses");
+        }
     }, [])
 
     useEffect(() => {
@@ -25,15 +28,15 @@ const Login = () => {
 
     const demoLogin = async() => {
             try {
-                const response = await fetch(`http://localhost:4000/api/demo`, {
+                const response = await fetch(`/api/demo`, {
                     method: "GET",
-                    credentials: "include", // Ensure cookies (session) are sent with the request
+                    credentials: "same-origin", // Ensure cookies (session) are sent with the request
                 })
 
                 const responseData = await response;
-                console.log("test")
+
                 if (response.ok) {
-                    navigate(`/businesses`);
+                    setUser(1);
                 }
             } catch (error) {
                 console.error(error);

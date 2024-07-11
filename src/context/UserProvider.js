@@ -4,10 +4,10 @@ import useFetchUser from '../utils/useFetchUser';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const { user, refreshUser, userLoading } = useFetchUser();
+    const { user, refreshUser, userLoading, setUser } = useFetchUser();
 
     return (
-        <UserContext.Provider value={{ user, refreshUser, userLoading }}>
+        <UserContext.Provider value={{ user, refreshUser, userLoading, setUser }}>
             {children}
         </UserContext.Provider>
     );

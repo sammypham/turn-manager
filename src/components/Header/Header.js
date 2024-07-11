@@ -1,8 +1,6 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useContext}from "react";
 import useFetchUser from "../../utils/useFetchUser.js"
 import { BusinessesContext } from '../../context/BusinessesProvider.js';
-
 import "./Header.css"
 
 import { useContext, useEffect, useState } from 'react';
@@ -16,8 +14,8 @@ const Header = () => {
     const location = useLocation();
     const { user } = useContext(UserContext);
 
-    
     const { refreshBusinesses } = useContext(BusinessesContext);
+    const { refreshUser } = useContext(UserContext);
     const [currentTime, setCurrentTime] = useState(dayjs());
 
     const logout = async () => {
@@ -38,6 +36,7 @@ const Header = () => {
             // Handle error gracefully (e.g., show error message)
         }
         refreshBusinesses();
+        refreshUser();
     }
     const loggedIn = (user) => {
         if (user) {

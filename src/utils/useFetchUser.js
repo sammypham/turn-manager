@@ -32,7 +32,7 @@ const useFetchUser = () => {
         refreshUser();
     }, []);
 
-    return { user, refreshUser, userLoading };
+    return { user, refreshUser, userLoading, setUser };
 };
 
 export default useFetchUser;
